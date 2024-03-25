@@ -68,6 +68,7 @@ public:
 		STATE_AVOID,		// 回避
 		STATE_PRAYER,		// 祈り
 		STATE_CHARGE,		// チャージ
+		STATE_FLOWERING,	// かいか
 		STATE_MAX
 	};
 
@@ -217,6 +218,7 @@ private:
 	void StateAvoid();		// 回避
 	void StatePrayer();		// 祈り
 	void StateCharge();		// チャージ
+	void StateFlowering();		// 開花
 
 	// その他関数
 	virtual void Controll();	// 操作

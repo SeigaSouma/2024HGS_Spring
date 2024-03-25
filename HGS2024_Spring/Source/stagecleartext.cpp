@@ -10,6 +10,7 @@
 #include "calculation.h"
 #include "camera.h"
 #include "game.h"
+#include "player.h"
 
 //==========================================================================
 // É}ÉNÉçíËã`
@@ -197,13 +198,16 @@ void CStageClearText::StateFadeOut()
 	float alpha = 1.0f - m_fStateTimer / TIME_FADEOUT;
 	SetAlpha(alpha);
 
-	if (TIME_FADEOUT * 0.5f <= m_fStateTimer &&
+	if (TIME_FADEOUT * 0.7f <= m_fStateTimer &&
 		!m_bCreateResultWindow)
 	{
 		m_bCreateResultWindow = true;
 
 		// êÌâ ê∂ê¨
 		CGame::GetInstance()->GetGameManager()->SetType(CGameManager::SceneType::SCENE_DURING_MAINRESULT);
+
+		CPlayer* pPlayer = CPlayer::GetListObj().GetData(0);
+		pPlayer->SetState(CPlayer::STATE::STATE_FLOWERING);
 	}
 
 	if (m_fStateTimer >= TIME_FADEOUT)
