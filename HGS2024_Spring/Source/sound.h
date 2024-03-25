@@ -76,6 +76,10 @@ public:
 		LABEL_SE_ENEMY_FIELD_SHORT,		// 敵地面(短)
 		LABEL_SE_ENEMY_SWING_SLOW,		// 敵攻撃スイング1
 		LABEL_SE_ENEMY_SWING_FAST,		// 敵攻撃スイング1
+		LABEL_SE_BOOST,					// ブースト
+		LABEL_SE_WINGS,					// 羽音
+		LABEL_SE_BLOOM,					// 花が咲く
+		LABEL_SE_CHARGE,				// チャージ
 		LABEL_MAX,
 	};
 
