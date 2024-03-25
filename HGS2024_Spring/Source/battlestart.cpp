@@ -243,6 +243,7 @@ void CBattleStart::StateFadeOut()
 
 		// í“¬ŠJŽn‚É‘JˆÚ
 		CGame::GetInstance()->GetGameManager()->SetType(CGameManager::SceneType::SCENE_MAIN);
+		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_WINGS);
 		return;
 	}
 	float ratio = 1.0f - m_fStateTime / TIME_FADEOUT;

@@ -57,7 +57,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 0.0f;
+	const float GOAL_Z = 10000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// 最高速になるまでの時間
 	const float TIME_START_VELOCITY = 0.2f;	// 最高速になるまでの時間
 	const float TIME_FLOWERING = 2.0f;		// 開花までの時間
@@ -192,6 +192,10 @@ HRESULT CPlayer::Init()
 {
 	// 種類の設定
 	SetType(TYPE_PLAYER);
+
+	// ダメージ受け付け判定
+	m_sDamageInfo.bReceived = true;
+	m_sDamageInfo.reciveTime = 0.0f;
 
 	m_state = STATE_NONE;	// 状態
 	m_nCntState = 0;		// 状態遷移カウンター
@@ -579,6 +583,10 @@ void CPlayer::Controll()
 			if (!m_bDash &&
 				pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
 			{
+
+				CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL_SE_WINGS);
+				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_BOOST);
+
 				m_bDash = true;
 				m_pBusket->Boost();
 				move.z += 10.0f;
@@ -1245,6 +1253,9 @@ void CPlayer::LimitPos()
 	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN &&
 		pos.z >= GOAL_Z)
 	{
+		CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL_SE_WINGS);
+		CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL_SE_BOOST);
+
 		// 通常クリア状態にする
 		CGame::GetInstance()->GetGameManager()->SetType(CGameManager::SceneType::SCENE_MAINRESULT);
 		CGame::GetInstance()->GetGameManager()->GameResultSettings();
@@ -1572,7 +1583,9 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 				GetMotion()->Set(MOTION_DMG);
 
 				// ダメージ音
-				//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_NORMAL);
+				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_NORMAL);
+				CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL_SE_WINGS);
+				CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL_SE_BOOST);
 			}
 		}
 
@@ -1710,6 +1723,11 @@ void CPlayer::UpdateDamageReciveTimer()
 				return;
 			}
 			pMotion->ToggleFinish(true);
+		}
+
+		if (!m_sDamageInfo.bReceived)
+		{
+			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_WINGS);
 		}
 
 		// ダメージ受け付け判定
