@@ -17,7 +17,7 @@
 //==========================================================================
 namespace
 {
-	const char* TEXTURE = "data\\TEXTURE\\battlewin\\text_win.png";
+	const char* TEXTURE = "data\\TEXTURE\\battlewin\\goal.png";
 	const float TIME_EXPANSION = 0.3f;			//拡大
 	const float TIME_EXPNONE = 1.0f;			//拡大後何もしない
 	const float TIME_FADEOUT = 0.4f;			// フェードアウト時間

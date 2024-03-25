@@ -57,7 +57,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// ‰ñ”ğ‚ÌŒ¸Z—Ê
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 60000.0f;
+	const float GOAL_Z = 0000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŠÔ
 	const float TIME_START_VELOCITY = 0.2f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŠÔ
 	const float TIME_FLOWERING = 2.0f;		// ŠJ‰Ô‚Ü‚Å‚ÌŠÔ
