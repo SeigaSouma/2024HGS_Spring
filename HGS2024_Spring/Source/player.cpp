@@ -54,7 +54,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
 	const float VELOCITY_SIDESTEP = 10.0f;
-	const float GOAL_Z = 20000.0f;
+	const float GOAL_Z = 60000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// 最高速になるまでの時間
 
 	// ステータス
