@@ -856,21 +856,21 @@ void CPlayer::MotionSet()
 				pMotion->Set(MOTION_WALK);
 			}
 		}
-		else if (m_sMotionFrag.bJump == true && m_sMotionFrag.bATK == false && m_sMotionFrag.bKnockBack == false && m_sMotionFrag.bDead == false)
-		{// ジャンプ中
+		//else if (m_sMotionFrag.bJump == true && m_sMotionFrag.bATK == false && m_sMotionFrag.bKnockBack == false && m_sMotionFrag.bDead == false)
+		//{// ジャンプ中
 
-			// ジャンプのフラグOFF
-			m_sMotionFrag.bJump = false;
+		//	// ジャンプのフラグOFF
+		//	m_sMotionFrag.bJump = false;
 
-			// ジャンプモーション
-			pMotion->Set(MOTION_JUMP);
-		}
-		else if (m_bJump == true && m_sMotionFrag.bJump == false && m_sMotionFrag.bATK == false && m_sMotionFrag.bKnockBack == false && m_sMotionFrag.bDead == false)
-		{// ジャンプ中&&ジャンプモーションが終わってる時
+		//	// ジャンプモーション
+		//	pMotion->Set(MOTION_JUMP);
+		//}
+		//else if (m_bJump == true && m_sMotionFrag.bJump == false && m_sMotionFrag.bATK == false && m_sMotionFrag.bKnockBack == false && m_sMotionFrag.bDead == false)
+		//{// ジャンプ中&&ジャンプモーションが終わってる時
 
-			// 落下モーション
-			pMotion->Set(MOTION_FALL);
-		}
+		//	// 落下モーション
+		//	pMotion->Set(MOTION_FALL);
+		//}
 		else
 		{
 			// ニュートラルモーション
@@ -915,114 +915,12 @@ void CPlayer::MotionBySetState()
 		m_bReadyDashAtk = false;
 	}
 
-	// ガードフラグ
-	switch (nType)
-	{
-	case MOTION_GUARD:
-	case MOTION_GUARD_DMG:
-		m_sMotionFrag.bGuard = true;	// ガードON
-		break;
-
-	default:
-		m_sMotionFrag.bGuard = false;	// ガードOFF
-		break;
-	}
-
-	// 攻撃フラグ
-	switch (nType)
-	{
-	case MOTION_ATK:
-	case MOTION_ATK2:
-	case MOTION_ATK3:
-	case MOTION_ATK4:
-	case MOTION_ATK4_FINISH:
-	case MOTION_DASHATK:
-		m_bAttacking = true;
-
-		if (pMotion->IsGetCombiable() && m_WeaponHandle != 0)
-		{
-			CMyEffekseer::GetInstance()->SetTrigger(m_WeaponHandle, 0);
-		}
-		break;
-
-	case MOTION_COUNTER_TURN:
-	case MOTION_COUNTER_ATTACK:
-		// カウンター状態に設定
-		m_state = STATE_COUNTER;
-		break;
-
-	default:
-		if (m_WeaponHandle != 0)
-		{
-			CMyEffekseer::GetInstance()->SetTrigger(m_WeaponHandle, 0);
-		}
-
-		// チャージ完了フラグ
-		m_bChargeCompletion = false;
-
-		m_bAttacking = false;	// 攻撃中判定
-		m_sMotionFrag.bATK = false;
-		m_nComboStage = 0;		// コンボの段階
-		break;
-	}
-
-
-	switch (nType)
-	{
-	case MOTION_COUNTER_ACCEPT:
-
-		if (pMotion->GetAllCount() <= m_PlayerStatus.counterExtensionFrame)
-		{
-			m_bCounterAccepting = true;	// カウンター受付中
-		}
-		else
-		{
-			m_bCounterAccepting = false;	// カウンター受付中
-
-		}
-		break;
-
-	default:
-		m_bCounterAccepting = false;	// カウンター受付中
-		break;
-	}
+	
 
 	// インプット情報取得
 	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
 	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
 
-	// チャージ移行
-	nType = pMotion->GetType();
-	switch (nType)
-	{
-	case MOTION_ATK4:
-		if (pInputGamepad->GetPress(CInputGamepad::BUTTON_Y, m_nMyPlayerIdx))
-		{
-			m_state = STATE_CHARGE;
-
-			if (!m_PlayerStatus.bChargeFlinch)
-			{
-				m_sDamageInfo.bActiveSuperArmor = true;
-			}
-		}
-		break;
-
-	default:
-		if (!m_PlayerStatus.bChargeFlinch)
-		{
-			m_sDamageInfo.bActiveSuperArmor = false;
-		}
-
-		m_fChargeTime = 0.0f;
-		break;
-	}
-
-	// 回避
-	if (nType == MOTION_AVOID &&
-		!m_bInDicision)
-	{
-		m_state = STATE_NONE;
-	}
 }
 
 //==========================================================================
@@ -1167,60 +1065,6 @@ void CPlayer::AttackAction(CMotion::AttackInfo ATKInfo, int nCntATK)
 
 	switch (nType)
 	{
-	case MOTION::MOTION_ATK:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_NORMALATK_SWING1);
-
-		m_WeaponHandle = CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL::EFKLABEL_NORMALATK,
-			weponpos, rot, 0.0f, 15.0f, true);
-		break;
-
-	case MOTION::MOTION_ATK2:
-	{
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_NORMALATK_SWING2);
-
-		m_WeaponHandle = CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL::EFKLABEL_NORMALATK,
-			weponpos, rot, 0.0f, 15.0f, true);
-	}
-		break;
-
-	case MOTION::MOTION_DASHATK:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_DASHATK_SWING2);
-
-		m_WeaponHandle = CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL::EFKLABEL_NORMALATK,
-			weponpos, rot, 0.0f, 15.0f, true);
-		break;
-
-	case MOTION::MOTION_ATK3:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_NORMALATK_SWING3);
-
-		m_WeaponHandle = CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL::EFKLABEL_NORMALATK,
-			weponpos, rot, 0.0f, 15.0f, true);
-		break;
-
-	case MOTION::MOTION_ATK4:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_CHARGEATK_START);
-		break;
-
-	case MOTION::MOTION_ATK4_FINISH:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_CHARGEATK_MOVE);
-
-		m_WeaponHandle = CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL::EFKLABEL_NORMALATK,
-			weponpos, rot, 0.0f, 15.0f, true);
-
-		if (m_bChargeCompletion)
-		{
-			pos.y += 100.0f;
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL::EFKLABEL_CHARGEATK,
-				pos, MyLib::Vector3(0.0f, D3DX_PI + rot.y, 0.0f), 0.0f, 80.0f, true);
-		}
-		break;
-
 	case MOTION::MOTION_WALK:
 		if (nCntATK == 0)
 		{
@@ -1243,85 +1087,6 @@ void CPlayer::AttackAction(CMotion::AttackInfo ATKInfo, int nCntATK)
 		}
 		break;
 
-	case MOTION::MOTION_AVOID:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_AVOID);
-		break;
-
-	case MOTION::MOTION_KNOCKBACK_PASSIVE:
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PASSIVE);
-		break;
-
-	case MOTION_COUNTER_TURN:
-		CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL_COUNTERLINE,
-			weponpos, 0.0f, 0.0f, 50.0f);
-
-		CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL_COUNTERLINE2,
-			weponpos, MyLib::Vector3(0.0f, D3DX_PI + rot.y, 0.0f), 0.0f, 40.0f);
-
-		CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL_COUNTER_KRKR,
-			GetPosition(), 0.0f, 0.0f, 40.0f);
-		break;
-
-	case MOTION_COUNTER_ATTACK:
-
-		if (nCntATK == 0)
-		{
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL_COUNTERLINE,
-				weponpos, 0.0f, 0.0f, 50.0f);
-
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL_COUNTERLINE2,
-				weponpos, 0.0f, 0.0f, 40.0f);
-
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL_COUNTER_KRKR,
-				GetPosition(), 0.0f, 0.0f, 40.0f);
-		}
-		else if (nCntATK != 0)
-		{
-			CManager::GetInstance()->GetCamera()->SetLenDest(200.0f, 3, 4.0f, 0.3f);
-			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_HIT);
-
-			// 敵へダウン状態
-			CEnemy* pEnemy = CEnemy::GetListObj().GetData(m_nIdxRockOn);
-
-			float angle = pEnemy->GetPosition().AngleXZ(GetPosition());
-
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL::EFKLABEL_COUNTER_BREAK,
-				weponpos, MyLib::Vector3(0.0f, D3DX_PI + angle, 0.0f), 0.0f, 40.0f);
-
-			if (pEnemy != nullptr)
-			{
-				pEnemy->Hit(static_cast<int>(10.0f * m_PlayerStatus.attackMultiply), GetPosition(), CGameManager::ATTACK_COUNTER);
-				pEnemy->SetDownTime(m_PlayerStatus.addDownTime);
-			}
-		}
-		break;
-
-	case MOTION::MOTION_RESPAWN:
-
-		if (nCntATK == 0)
-		{
-			// ゲームパッド情報取得
-			CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
-			pInputGamepad->SetVibration(CInputGamepad::VIBRATION_STATE::VIBRATION_STATE_RESPAWN, 0);
-
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL::EFKLABEL_RESPAWN_START,
-				weponpos, MyLib::Vector3(0.0f, D3DX_PI + GetRotation().y, 0.0f), 0.0f, 40.0f);
-		}
-		else {
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL::EFKLABEL_RESPAWN_WIND,
-				weponpos, MyLib::Vector3(0.0f, D3DX_PI + GetRotation().y, 0.0f), 0.0f, 40.0f);
-		}
-		break;
-
 	default:
 		break;
 	}
@@ -1339,20 +1104,6 @@ void CPlayer::AttackInDicision(CMotion::AttackInfo* pATKInfo, int nCntATK)
 	MyLib::Vector3 weponpos = pMotion->GetAttackPosition(GetModel(), *pATKInfo);
 
 	CEffect3D* pEffect = nullptr;
-
-	switch (pMotion->GetType())
-	{
-	case MOTION_ATK:
-		break;
-
-	case MOTION_COUNTER_ACCEPT:
-		m_bCounterAccepting = true;	// カウンター受付中
-		break;
-
-	case MOTION_AVOID:
-		m_state = STATE_AVOID;
-		break;
-	}
 
 	if (pATKInfo->fRangeSize == 0.0f)
 	{
@@ -1389,11 +1140,7 @@ void CPlayer::AttackInDicision(CMotion::AttackInfo* pATKInfo, int nCntATK)
 
 				int damage = static_cast<int>(static_cast<float>(pATKInfo->nDamage) * m_PlayerStatus.attackMultiply);
 
-				if (pMotion->GetType() == MOTION_ATK4_FINISH &&
-					m_bChargeCompletion)
-				{
-					damage = static_cast<int>(static_cast<float>(damage) * MULTIPLY_CHARGEATK);
-				}
+				
 
 				if (pEnemy->Hit(damage, GetPosition()) == true)
 				{// 当たってたら
@@ -1421,25 +1168,7 @@ void CPlayer::AttackInDicision(CMotion::AttackInfo* pATKInfo, int nCntATK)
 					enemypos.y += pEnemy->GetHeight() * 0.5f;
 					enemypos += UtilFunc::Transformation::GetRandomPositionSphere(enemypos, collider.radius * 0.5f);
 
-					switch (pMotion->GetType())
-					{
-					case MOTION::MOTION_ATK:
-						CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_NORMALATK_HIT1);
-						break;
-
-					case MOTION::MOTION_ATK2:
-					case MOTION::MOTION_DASHATK:
-						CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_NORMALATK_HIT2);
-						break;
-
-					case MOTION::MOTION_ATK3:
-						CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_NORMALATK_HIT3);
-						break;
-
-					case MOTION::MOTION_ATK4_FINISH:
-						CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_CHARGEATK_HIT);
-						break;
-					}
+					
 					break;
 				}
 			}
@@ -1672,36 +1401,7 @@ MyLib::HitResult_Character CPlayer::Hit(const int nValue, CGameManager::AttackTy
 
 	CCamera* pCamera = CManager::GetInstance()->GetCamera();
 
-	if (m_bCounterAccepting)
-	{// カウンター受け付け中
-		
-		if (atkType == CGameManager::ATTACK_NORMAL)
-		{
-			// 受け流し
-			GetMotion()->Set(MOTION_COUNTER_TURN);
-
-			// カウンター受け付け
-			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_TURN);
-		}
-		else
-		{
-			if (GetMotion()->GetType() != MOTION_COUNTER_ATTACK)
-			{
-				// 開始時のフラグコピー
-				m_bLockOnAtStart = pCamera->IsRockOn();
-
-				// 反撃
-				GetMotion()->Set(MOTION_COUNTER_ATTACK);
-				pCamera->SetRockOnState(CCamera::RockOnState::ROCKON_COUNTER, 0.0f);
-
-				// カウンター受け付け
-				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_ATTACK);
-			}
-		}
-
-		hitresult.ishit = true;
-		return hitresult;
-	}
+	
 	
 	// 共通のヒット処理
 	hitresult = ProcessHit(nValue, 0.0f);
@@ -2308,20 +2008,7 @@ void CPlayer::StateRespawn()
 		return;
 	}
 
-	int nType = pMotion->GetType();
-	if (nType != MOTION_RESPAWN)
-	{// 復活が終了
-		m_state = STATE::STATE_INVINCIBLE;
-		m_nCntState = 60;
-		m_sMotionFrag.bDead = false;
-		return;
-	}
-
-	if (nType != MOTION_RESPAWN)
-	{
-		// 復活モーション設定
-		pMotion->Set(MOTION_RESPAWN);
-	}
+	
 }
 
 //==========================================================================
@@ -2348,14 +2035,7 @@ void CPlayer::StateCounter()
 	MyLib::Vector3 enemypos = pEnemy->GetPosition();
 	SetRotDest(pos.AngleXZ(enemypos));
 
-	int nType = pMotion->GetType();
-	if (nType != MOTION_COUNTER_ACCEPT &&
-		nType != MOTION_COUNTER_TURN &&
-		nType != MOTION_COUNTER_ATTACK)
-	{// カウンター状態が終了
-
-		return;
-	}
+	
 }
 
 //==========================================================================
@@ -2370,12 +2050,7 @@ void CPlayer::StateAvoid()
 		return;
 	}
 
-	int nType = pMotion->GetType();
-	if (nType != MOTION_AVOID)
-	{// 回避が終了
-		m_state = STATE_NONE;
-		return;
-	}
+	
 }
 
 //==========================================================================
@@ -2390,12 +2065,7 @@ void CPlayer::StatePrayer()
 		return;
 	}
 
-	if (pMotion->IsFinish())
-	{// 祈りが終了
-
-		// 祈りループモーション設定
-		pMotion->Set(MOTION_PRAYERLOOP);
-	}
+	
 }
 
 //==========================================================================
@@ -2403,108 +2073,9 @@ void CPlayer::StatePrayer()
 //==========================================================================
 void CPlayer::StateCharge()
 {
-	// インプット情報取得
-	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
+	
 
-	// モーション取得
-	CMotion* pMotion = GetMotion();
-	if (pMotion == nullptr)
-	{
-		m_nComboStage = 0;
-		CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL::LABEL_SE_CHARGEATK_ENDRESS);
-		return;
-	}
-	int nType = pMotion->GetType();
-
-	if (!m_bAttacking ||
-		(nType != MOTION_ATK4 &&
-		nType != MOTION_ATK4_FINISH))
-	{
-		m_state = STATE_NONE;
-		m_nComboStage = 0;
-		m_fChargeTime = 0.0f;
-		m_bChargeCompletion = false;
-		CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL::LABEL_SE_CHARGEATK_ENDRESS);
-	}
-
-
-	// 状態カウンターループ
-	m_nCntPowerEmission = (m_nCntPowerEmission + 1) % 4;
-
-	// チャージ時間加算
-	if (nType == MOTION_ATK4)
-	{
-		m_fChargeTime += CManager::GetInstance()->GetDeltaTime();
-	}
-
-	if (m_fChargeTime < m_PlayerStatus.chargeTime)
-	{
-		// チャージ完了フラグ
-		m_bChargeCompletion = false;
-	}
-
-	if (m_fChargeTime >= m_PlayerStatus.chargeTime &&
-		!m_bChargeCompletion)
-	{// チャージ完了！
-
-		// チャージ完了フラグ
-		m_bChargeCompletion = true;
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_CHARGEATK_COMPLETE);
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_CHARGEATK_ENDRESS);
-
-		// 情報取得
-		CMotion::Info aInfo = pMotion->GetInfo(pMotion->GetType());
-
-		for (int nCntAttack = 0; nCntAttack < aInfo.nNumAttackInfo; nCntAttack++)
-		{
-			if (aInfo.AttackInfo[nCntAttack] == nullptr)
-			{
-				continue;
-			}
-
-			// 攻撃情報取得
-			CMotion::AttackInfo* AttackInfo = aInfo.AttackInfo[nCntAttack];
-			MyLib::Vector3 pos = pMotion->GetAttackPosition(GetModel(), *AttackInfo);
-
-			// チャージ完了
-			CMyEffekseer::GetInstance()->SetEffect(
-				CMyEffekseer::EFKLABEL_CHARGEFINISH,
-				pos,
-				0.0f, 0.0f, 40.0f);
-		}
-	}
-
-	// チャージエフェクト発生
-	if (nType == MOTION_ATK4 && 
-		m_bChargeCompletion && 
-		m_nCntPowerEmission == 0)
-	{
-		CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL_CHARGE,
-			GetPosition(),
-			0.0f, 0.0f, 80.0f);
-	}
-
-	// チャージを離してる
-	if (!pInputGamepad->GetPress(CInputGamepad::BUTTON_Y, m_nMyPlayerIdx) &&
-		nType == MOTION_ATK4 && pMotion->IsFinish())
-	{
-		pMotion->Set(MOTION_ATK4_FINISH);
-		m_fChargeTime = 0.0f;
-		m_nComboStage = 0;
-		m_state = STATE_NONE;
-		CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL::LABEL_SE_CHARGEATK_ENDRESS);
-	}
-
-	if (nType == MOTION_ATK4_FINISH && pMotion->IsFinish())
-	{
-		m_state = STATE_NONE;
-		m_nComboStage = 0;
-		m_fChargeTime = 0.0f;
-		m_bChargeCompletion = false;
-		CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL::LABEL_SE_CHARGEATK_ENDRESS);
-	}
+	
 }
 
 //==========================================================================
