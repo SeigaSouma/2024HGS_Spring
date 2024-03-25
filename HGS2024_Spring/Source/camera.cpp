@@ -300,7 +300,7 @@ void CCamera::MoveCameraInput()
 //==========================================================================
 void CCamera::MoveCameraStick(int nIdx)
 {
-#ifdef _DEBUG
+#if 0
 	if (CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAME ||
 		CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAMETUTORIAL)
 	{
@@ -321,7 +321,7 @@ void CCamera::MoveCameraStick(int nIdx)
 //==========================================================================
 void CCamera::MoveCameraMouse()
 {
-#ifdef _DEBUG
+#if 0
 
 	if (CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAME ||
 		CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAMETUTORIAL)
