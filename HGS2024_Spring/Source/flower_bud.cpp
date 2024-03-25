@@ -19,7 +19,7 @@ namespace
 {
 	const char* MODEL = "data\\MODEL\\flower\\ranunculus.x";	// モデルファイル
 	const int MAX_SPAWNNUM = 2048;		// 最大生成数
-	const float TIME_CHARGE = 1.5f;		// チャージ時間
+	const int TIME_CHARGE = 90;		// チャージ時間
 	const int TIME_FLOWERING = 100;	// 開花時間
 }
 
@@ -135,20 +135,19 @@ void CFlowerBud::SetCurrentPollen(int maxPollen, int pollen)
 void CFlowerBud::StateCharge()
 {
 	// 状態タイマー加算
-	m_fStateTime += CManager::GetInstance()->GetDeltaTime();
+	m_fStateTime++;
 
 	my_particle::Create(GetPosition(), my_particle::TYPE::TYPE_FLOWERINGCHARGE);
-	CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_CHARGE);
 
-	if (m_fStateTime >= TIME_CHARGE)
+	if (static_cast<int>(m_fStateTime) % 6 == 0)
+	{
+		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_CHARGE);
+	}
+
+	if (static_cast<int>(m_fStateTime) >= TIME_CHARGE)
 	{
 		m_fStateTime = 0.0f;			// 状態タイマー
 		m_state = STATE::STATE_FLOWERING;
-
-		if (m_nSpawnNum > 0)
-		{
-			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_BLOOM);
-		}
 	}
 }
 
@@ -159,6 +158,12 @@ void CFlowerBud::StateFlowering()
 {
 	// 状態タイマー加算
 	m_fStateTime++;
+
+	if (m_nSpawnNum > 0 &&
+		static_cast<int>(m_fStateTime) % 8 == 0)
+	{
+		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_BLOOM);
+	}
 
 	int num = m_nSpawnNum / TIME_FLOWERING;
 	//CManager::GetInstance()->GetCamera()->SetLenDest(4000.0f, 2, 1.0f, 0.015f);

@@ -18,8 +18,10 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/BGM/enhance.wav", -1 },			// 強化
 	{ "data/BGM/enhance_wind.wav", -1 },	// 強化の風
 	{ "data/BGM/boss.wav", -1 },			// ボス
-	{ "data/BGM/result.wav", -1 },			// タイトル
+	{ "data/BGM/result.wav", -1 },			// リザルト
 	{ "data/BGM/galleryClear.wav", -1 },	// 観客
+	{ "data/BGM/tutorial.wav", -1 },	// チュートリアル
+	{ "data/BGM/ranking.wav", -1 },	// ランキング
 	{ "data/SE/walk01.wav", 0 },			// 歩行1
 	{ "data/SE/walk02.wav", 0 },			// 歩行2
 	{ "data/SE/dash01.wav", 0 },			// ダッシュ1
@@ -68,10 +70,10 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/enemyField_short.wav", 0 },		// 敵地面(短)
 	{ "data/SE/enemyswing_01.wav", 0 },			// 敵攻撃スイング(遅)
 	{ "data/SE/enemyswing_02.wav", 0 },			// 敵攻撃スイング(早)
-	{ "data/SE/boost.wav", -1 },					// ブースト
-	{ "data/SE/wings.wav", -1 },					// 羽音
-	{ "data/SE/bloom.wav", -1 },					// 花が咲く
-	{ "data/SE/charge.wav", -1 },				// チャージ
+	{ "data/SE/boost.wav", -1 },				// ブースト
+	{ "data/SE/wings.wav", -1 },				// 羽音
+	{ "data/SE/bloom.wav", 0 },					// 花が咲く
+	{ "data/SE/charge.wav", 0 },				// チャージ
 
 };	// サウンドの情報
 
