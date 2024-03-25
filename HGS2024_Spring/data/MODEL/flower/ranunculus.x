@@ -821,7 +821,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Downloads\\uploads_files_1828392_ranunculus\\ranunculus\\TEXTURE\\ranunculus1.tga";
+    "data\\TEXTURE\\flower\\ranunculus1.tga";
    }
   }
  }
