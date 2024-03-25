@@ -25,7 +25,7 @@ TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\hiero.png		# [12]
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 38
+NUM_MODEL = 39
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -68,6 +68,7 @@ MODEL_FILENAME = data\\MODEL\\arena\\taimatu_001.x		# [34]
 MODEL_FILENAME = data\\MODEL\\arena\\taimatu_002.x		# [35]
 MODEL_FILENAME = data\\MODEL\\gallery\\gallery_red_wait.x		# [36]
 MODEL_FILENAME = data\\MODEL\\stage\\titilesword.x		# [37]
+MODEL_FILENAME = data\\MODEL\\flower\\all.x		# [38]
 
 #==============================================================================
 # 空情報
@@ -2606,6 +2607,48 @@ MODELSET
 	TYPE = 17
 	POS = -1007.47 0.00 58061.91
 	ROT = 0.00 1.66 0.00
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 38
+	POS = 258.85 0.00 193.78
+	ROT = 0.00 0.00 0.00
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 38
+	POS = -384.88 0.00 7.44
+	ROT = 0.00 0.52 0.00
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 38
+	POS = -377.46 0.00 856.05
+	ROT = 0.00 0.79 0.00
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 38
+	POS = -370.18 0.00 1421.11
+	ROT = 0.00 0.96 0.00
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 38
+	POS = -2323.42 0.00 119.17
+	ROT = 0.00 0.96 0.00
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 38
+	POS = -1266.95 0.00 474.29
+	ROT = 0.00 0.96 0.00
 	SHADOW = 1
 END_MODELSET
 
