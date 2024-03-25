@@ -28,6 +28,8 @@ public:
 		LABEL_BGM_BOSS,					// ボス
 		LABEL_BGM_RESULT,				// リザルト
 		LABEL_BGM_GALLERY,				// 観客
+		LABEL_BGM_TUTORIAL,				// 観客
+		LABEL_BGM_RANKING,				// 観客
 		LABEL_SE_WALK1,					// 歩行1
 		LABEL_SE_WALK2,					// 歩行2
 		LABEL_SE_DASH1,					// ダッシュ1
