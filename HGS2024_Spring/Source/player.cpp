@@ -57,7 +57,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// ‰ñ”ğ‚ÌŒ¸Z—Ê
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 60000.0f;
+	const float GOAL_Z = 0.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŠÔ
 	const float TIME_START_VELOCITY = 0.2f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŠÔ
 	const float TIME_FLOWERING = 2.0f;		// ŠJ‰Ô‚Ü‚Å‚ÌŠÔ
@@ -209,7 +209,6 @@ HRESULT CPlayer::Init()
 	// Š„‚è“–‚Ä
 	m_List.Regist(this);
 
-
 	// ‘€ìŠÖ˜A
 	ChangeAtkControl(DEBUG_NEW CPlayerControlAttack());
 	ChangeDefenceControl(DEBUG_NEW CPlayerControlDefence());
@@ -219,7 +218,6 @@ HRESULT CPlayer::Init()
 	// ‚©‚²¶¬
 	m_pBusket = CBusket::Create(10000);
 	CFlowerBud::Create(MyLib::Vector3(0.0f, 0.0f, GOAL_Z + 1000.0f), 10000, 10000);
-
 
 	m_fWalkTime = TIME_START_VELOCITY;
 

@@ -68,9 +68,9 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/enemyField_short.wav", 0 },		// 敵地面(短)
 	{ "data/SE/enemyswing_01.wav", 0 },			// 敵攻撃スイング(遅)
 	{ "data/SE/enemyswing_02.wav", 0 },			// 敵攻撃スイング(早)
-	{ "data/SE/boost.wav", -1 },					// ブースト
-	{ "data/SE/wings.wav", -1 },					// 羽音
-	{ "data/SE/bloom.wav", -1 },					// 花が咲く
+	{ "data/SE/boost.wav", -1 },				// ブースト
+	{ "data/SE/wings.wav", -1 },				// 羽音
+	{ "data/SE/bloom.wav", -1 },				// 花が咲く
 	{ "data/SE/charge.wav", -1 },				// チャージ
 
 };	// サウンドの情報
