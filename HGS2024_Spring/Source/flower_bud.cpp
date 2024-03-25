@@ -144,6 +144,11 @@ void CFlowerBud::StateCharge()
 	{
 		m_fStateTime = 0.0f;			// 状態タイマー
 		m_state = STATE::STATE_FLOWERING;
+
+		if (m_nSpawnNum > 0)
+		{
+			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_BLOOM);
+		}
 	}
 }
 
@@ -167,7 +172,6 @@ void CFlowerBud::StateFlowering()
 		CDecideFlower::Create(GetPosition(), move);
 	}
 	
-	CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_BLOOM);
 
 	if (static_cast<int>(m_fStateTime) >= TIME_FLOWERING)
 	{
