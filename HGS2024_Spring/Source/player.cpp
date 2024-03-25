@@ -59,7 +59,7 @@ namespace
 	const float GOAL_Z = 0.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// 最高速になるまでの時間
 	const float TIME_START_VELOCITY = 0.2f;	// 最高速になるまでの時間
-	const float TIME_FLOWERING = 1.0f;		// 開花までの時間
+	const float TIME_FLOWERING = 2.0f;		// 開花までの時間
 
 	// ステータス
 	const float DEFAULT_RESPAWNHEAL = 0.45f;			// リスポーン時の回復割合
@@ -95,6 +95,7 @@ CPlayer::STATE_FUNC CPlayer::m_StateFunc[] =
 	&CPlayer::StatePrayer,		// 祈り
 	&CPlayer::StateCharge,		// チャージ
 	&CPlayer::StateFlowering,	// 開花
+	&CPlayer::StateAfterFlowering,	// 開花
 };
 
 //==========================================================================
@@ -216,7 +217,7 @@ HRESULT CPlayer::Init()
 
 	// かご生成
 	m_pBusket = CBusket::Create(10000);
-	CFlowerBud::Create(MyLib::Vector3(0.0f, 0.0f, 0.0f), 10000, 10000);
+	CFlowerBud::Create(MyLib::Vector3(0.0f, 0.0f, GOAL_Z + 1000.0f), 10000, 10000);
 
 
 	m_fWalkTime = TIME_START_VELOCITY;
@@ -1187,7 +1188,12 @@ void CPlayer::AttackInDicision(CMotion::AttackInfo* pATKInfo, int nCntATK)
 void CPlayer::LimitPos()
 {
 	MyLib::Vector3 pos = GetPosition();
-	pos.y = 0.0f;
+
+	if (m_state != STATE_FLOWERING &&
+		m_state != STATE_AFTERFLOWERING)
+	{
+		pos.y = 0.0f;
+	}
 
 	if (pos.x >= 1400.0f)
 	{
@@ -1204,27 +1210,30 @@ void CPlayer::LimitPos()
 	SetPosition(pos);
 	SetMove(move);
 
-	// エリア制限情報取得
-	CListManager<CObjectX> List = CObjectX::GetListObj();
-	CObjectX* pList = nullptr;
-
-	while (List.ListLoop(&pList))
+	if (m_state != STATE_FLOWERING &&
+		m_state != STATE_AFTERFLOWERING)
 	{
-		MyLib::Vector3 OBpos = pList->GetPosition();
-		float len = pList->GetVtxMax().x;
+		// エリア制限情報取得
+		CListManager<CObjectX> List = CObjectX::GetListObj();
+		CObjectX* pList = nullptr;
 
-		// コライダーの数繰り返し
-		std::vector<SphereCollider> colliders = GetSphereColliders();
-		for (const auto& collider : colliders)
+		while (List.ListLoop(&pList))
 		{
-			if (UtilFunc::Collision::CircleRange3D(collider.center, OBpos, collider.radius, len))
+			MyLib::Vector3 OBpos = pList->GetPosition();
+			float len = pList->GetVtxMax().x;
+
+			// コライダーの数繰り返し
+			std::vector<SphereCollider> colliders = GetSphereColliders();
+			for (const auto& collider : colliders)
 			{
-				ProcessHit(0, OBpos);
-				break;
+				if (UtilFunc::Collision::CircleRange3D(collider.center, OBpos, collider.radius, len))
+				{
+					ProcessHit(0, OBpos);
+					break;
+				}
 			}
 		}
 	}
-
 
 	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN &&
 		pos.z >= GOAL_Z)
@@ -2126,8 +2135,19 @@ void CPlayer::StateFlowering()
 	if (nType == MOTION::MOTION_FLOWERING &&
 		pMotion->IsFinish())
 	{
-		m_state = STATE_NONE;
+		m_state = STATE_AFTERFLOWERING;
 	}
+}
+
+//==========================================================================
+// 開花後
+//==========================================================================
+void CPlayer::StateAfterFlowering()
+{
+	MyLib::Vector3 pos = GetPosition();
+	pos.y += (100.0f - pos.y) * 0.1f;
+	SetPosition(pos);
+
 }
 
 //==========================================================================
