@@ -14,7 +14,7 @@
 // É}ÉNÉçíËã`
 //==========================================================================
 #define TEXTURE		"data\\TEXTURE\\field002.png"
-#define POS_MESHDOME	(16000.0f)
+#define POS_MESHDOME	(80000.0f)
 #define POS_MESHDOME_Y	(POS_MESHDOME)
 
 //==========================================================================
@@ -161,6 +161,8 @@ HRESULT CMeshDome::Init()
 	{// é∏îsÇµÇƒÇ¢ÇΩÇÁ
 		return E_FAIL;
 	}
+
+	SetPosition(MyLib::Vector3(0.0f, -1500.0f, 0.0f));
 
 	return S_OK;
 }

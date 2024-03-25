@@ -265,12 +265,6 @@ void CGameManager::SceneTransition()
 		// フォグリセット
 		MyFog::ToggleFogFrag(false);
 
-		// 塵
-		CMyEffekseer::GetInstance()->SetEffect(
-			CMyEffekseer::EFKLABEL_BGFIRE,
-			MyLib::Vector3(0.0f, 0.0f, 0.0f),
-			0.0f, 0.0f, 100.0f, false);
-
 		// プレイヤー取得
 		CListManager<CPlayer> playerList = CPlayer::GetListObj();
 		CPlayer* pPlayer = playerList.GetData(0);
