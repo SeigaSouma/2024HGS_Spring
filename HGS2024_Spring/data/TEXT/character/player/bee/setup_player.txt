@@ -101,7 +101,7 @@ COLLIDER_FILENAME = data/TEXT/character/player/bee/sphere_collider.json
 #------------------------------------------------------------------------------
 # モーション数
 #------------------------------------------------------------------------------
-NUM_MOTION = 9
+NUM_MOTION = 10
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -115,6 +115,7 @@ MOTION_FILENAME = data/TEXT/character/player/bee/motion_knockback_passive.txt	# 
 MOTION_FILENAME = data/TEXT/character/player/bee/motion_down.txt			# [6]ダウン
 MOTION_FILENAME = data/TEXT/character/player/bee/motion_deadwait.txt			# [7]死亡
 MOTION_FILENAME = data/TEXT/character/player/bee/motion_dead.txt			# [8]死亡
+MOTION_FILENAME = data/TEXT/character/player/bee/motion_flowering.txt			# [9]開花
 
 
 END_SCRIPT		# この行は絶対消さないこと！

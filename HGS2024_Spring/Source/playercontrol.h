@@ -36,10 +36,7 @@ protected:
 
 		// ƒRƒ“ƒ{‚Ì’iŠK‰ÁŽZ
 		combostage++;
-		if (combostage > CPlayer::MOTION_ATK3 - CPlayer::MOTION_ATK)
-		{
-			combostage = 0;
-		}
+		
 		player->SetComboStage(combostage);
 	}
 

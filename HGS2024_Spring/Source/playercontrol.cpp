@@ -42,77 +42,7 @@ bool CPlayerControlAttack::IsAttack(CPlayer* player)
 //==========================================================================
 void CPlayerControlAttack::Attack(CPlayer* player)
 {
-	// インプット情報取得
-	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
-
-	// 現在の種類取得
-	CMotion* pMotion = player->GetMotion();
-	int nMotionType = pMotion->GetType();
-
-	// 目標の向き取得
-	float fRotDest = player->GetRotDest();
-
-	// カメラの向き取得
-	CCamera* pCamera = CManager::GetInstance()->GetCamera();
-	MyLib::Vector3 Camerarot = pCamera->GetRotation();
-
-	MyLib::Vector3 pos = player->GetPosition();
-
-	// 予約フラグオフ
-	m_bAttackReserved = false;
-
-	// 攻撃
-	if (IsAttack(player) &&
-		!pInputGamepad->GetPress(CInputGamepad::BUTTON_RB, player->GetMyPlayerIdx()) &&
-		pInputGamepad->GetTrigger(CInputGamepad::BUTTON_X, player->GetMyPlayerIdx()))
-	{
-		int combostage = player->GetComboStage();
-		if (combostage == 0 || player->IsAttacking())
-		{
-			m_bAttackReserved = true;
-		}
-
-		if (pInputGamepad->IsTipStick())
-		{// 左スティックが倒れてる場合
-			fRotDest = D3DX_PI + pInputGamepad->GetStickRotL(player->GetMyPlayerIdx()) + Camerarot.y;
-		}
-
-		// 敵確認
-		CListManager<CEnemy> enemyList = CEnemy::GetListObj();
-		CEnemy* pEnemy = nullptr;
-		while (enemyList.ListLoop(&pEnemy))
-		{
-			MyLib::Vector3 enemypos = pEnemy->GetPosition();
-			if (UtilFunc::Collision::CollisionViewRange3D(pos, enemypos, fRotDest, 150.0f) &&
-				UtilFunc::Collision::CircleRange3D(pos, enemypos, LENGTH_AUTOFACE, pEnemy->GetRadius()))
-			{
-				fRotDest = pos.AngleXZ(enemypos);
-				break;
-			}
-		}
-
-		if (player->IsReadyDashAtk() && combostage == 0)
-		{// ダッシュ中の初撃は2からスタート
-			combostage++;
-			player->SetComboStage(combostage);
-
-			pMotion->Set(CPlayer::MOTION_DASHATK, true);
-		}
-		else
-		{
-			// コンボ段階分考慮
-			int nSetType = CPlayer::MOTION_ATK + combostage;
-			pMotion->Set(nSetType, true);
-		}
-		player->SetComboStage(combostage);
-
-		// 段階別リセット処理
-		StageByReset(player);
-	}
-
-	// 目標の向き設定
-	player->SetRotDest(fRotDest);
+	
 }
 
 //==========================================================================
@@ -120,66 +50,7 @@ void CPlayerControlAttack::Attack(CPlayer* player)
 //==========================================================================
 void CPlayerControlAttack_Level1::Attack(CPlayer* player)
 {
-	// インプット情報取得
-	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
 
-	// 現在の種類取得
-	CMotion* pMotion = player->GetMotion();
-	int nMotionType = pMotion->GetType();
-
-	// カメラの向き取得
-	CCamera* pCamera = CManager::GetInstance()->GetCamera();
-	MyLib::Vector3 Camerarot = pCamera->GetRotation();
-
-	if (!m_bChargePossible)
-	{
-		CPlayerControlAttack::Attack(player);
-	}
-
-	// 情報取得
-	float fRotDest = player->GetRotDest();
-	MyLib::Vector3 pos = player->GetPosition();
-
-	if (IsAttack(player) &&
-		pInputGamepad->GetPress(CInputGamepad::BUTTON_Y, player->GetMyPlayerIdx()))
-	{
-		if (pInputGamepad->IsTipStick())
-		{// 左スティックが倒れてる場合
-			fRotDest = D3DX_PI + pInputGamepad->GetStickRotL(player->GetMyPlayerIdx()) + Camerarot.y;
-		}
-
-		// 敵確認
-		CListManager<CEnemy> enemyList = CEnemy::GetListObj();
-		CEnemy* pEnemy = nullptr;
-		while (enemyList.ListLoop(&pEnemy))
-		{
-			MyLib::Vector3 enemypos = pEnemy->GetPosition();
-			if (UtilFunc::Collision::CollisionViewRange3D(pos, enemypos, fRotDest, 150.0f) &&
-				UtilFunc::Collision::CircleRange3D(pos, enemypos, LENGTH_AUTOFACE, pEnemy->GetRadius()))
-			{
-				fRotDest = pos.AngleXZ(enemypos);
-				break;
-			}
-		}
-
-		// コンボ段階分考慮
-		int nSetType = CPlayer::MOTION_ATK4;
-		pMotion->Set(CPlayer::MOTION_ATK4);
-
-		// 段階別リセット処理
-		player->SetComboStage(0);
-		m_bChargePossible = false;
-	}
-
-	// 目標の向き設定
-	player->SetRotDest(fRotDest);
-
-	int combostage = player->GetComboStage();
-	if (m_bChargePossible && combostage != 3)
-	{
-		m_bChargePossible = false;
-	}
 }
 
 
@@ -190,78 +61,13 @@ void CPlayerControlAttack_Level1::Attack(CPlayer* player)
 // 基底
 void CPlayerControlDefence::Defence(CPlayer* player)
 {
-	// インプット情報取得
-	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
-
-	// 現在の種類取得
-	CMotion* pMotion = player->GetMotion();
-
-	// 目標の向き取得
-	float fRotDest = player->GetRotDest();
-
-	// モーションフラグ取得
-	CPlayer::SMotionFrag motionFrag = player->GetMotionFrag();
-
-	// カメラの向き取得
-	CCamera* pCamera = CManager::GetInstance()->GetCamera();
-	MyLib::Vector3 Camerarot = pCamera->GetRotation();
-
-	// ガード
-	if (
-		(
-			(pMotion->IsGetCombiable() &&
-		(pMotion->GetType() == CPlayer::MOTION::MOTION_COUNTER_TURN || pMotion->GetType() == CPlayer::MOTION::MOTION_COUNTER_ATTACK)) ||
-		pMotion->IsGetCancelable()
-			) &&
-		!player->IsJump() &&
-		pInputGamepad->GetPress(CInputGamepad::BUTTON_RB, player->GetMyPlayerIdx()))
-	{
-		pMotion->Set(CPlayer::MOTION_DEF);
-
-		if (pInputGamepad->IsTipStick())
-		{// 左スティックが倒れてる場合
-			fRotDest = D3DX_PI + pInputGamepad->GetStickRotL(player->GetMyPlayerIdx()) + Camerarot.y;
-		}
-
-		pMotion->Set(CPlayer::MOTION_GUARD);
-		motionFrag.bGuard = true;	// ガードON
-	}
-
-	// 目標の向き設定
-	player->SetRotDest(fRotDest);
-
-	// モーションフラグ設定
-	player->SetMotionFrag(motionFrag);
+	
 }
 
 // レベル1
 void CPlayerControlDefence_Level1::Defence(CPlayer* player)
 {
-	// 防御
-	CPlayerControlDefence::Defence(player);
-
-
-	// インプット情報取得
-	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
-
-	// 現在の種類取得
-	CMotion* pMotion = player->GetMotion();
-
-	// モーションフラグ取得
-	CPlayer::SMotionFrag motionFrag = player->GetMotionFrag();
-
-	// ガード中に攻撃でカウンター
-	if (pMotion->GetType() == CPlayer::MOTION_GUARD &&
-		pInputGamepad->GetTrigger(CInputGamepad::BUTTON_X, player->GetMyPlayerIdx()))
-	{
-		pMotion->Set(CPlayer::MOTION_COUNTER_ACCEPT);
-		motionFrag.bCounter = true;		// 攻撃判定ON
-	}
-
-	// モーションフラグ設定
-	player->SetMotionFrag(motionFrag);
+	
 }
 
 //==========================================================================
@@ -269,37 +75,7 @@ void CPlayerControlDefence_Level1::Defence(CPlayer* player)
 //==========================================================================
 void CPlayerControlAvoid::Avoid(CPlayer* player)
 {
-	// インプット情報取得
-	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
 
-	// 現在の種類取得
-	CMotion* pMotion = player->GetMotion();
-
-	// 目標の向き取得
-	float fRotDest = player->GetRotDest();
-
-	// カメラの向き取得
-	CCamera* pCamera = CManager::GetInstance()->GetCamera();
-	MyLib::Vector3 Camerarot = pCamera->GetRotation();
-
-	// 回避
-	if (!player->IsJump() &&
-		(pMotion->IsGetCombiable() || pMotion->IsGetCancelable()) &&
-		pInputGamepad->GetTrigger(CInputGamepad::BUTTON_B, player->GetMyPlayerIdx()))
-	{
-		pMotion->Set(CPlayer::MOTION_DEF);
-		pMotion->Set(CPlayer::MOTION_AVOID);
-
-		if (pInputGamepad->IsTipStick())
-		{// 左スティックが倒れてる場合
-
-			fRotDest = D3DX_PI + pInputGamepad->GetStickRotL(player->GetMyPlayerIdx()) + Camerarot.y;
-		}
-	}
-
-	// 目標の向き設定
-	player->SetRotDest(fRotDest);
 }
 
 

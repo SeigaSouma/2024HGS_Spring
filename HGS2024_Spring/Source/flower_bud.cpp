@@ -18,7 +18,7 @@ namespace
 {
 	const char* MODEL = "data\\MODEL\\flower\\ranunculus.x";	// モデルファイル
 	const int MAX_SPAWNNUM = 2048;		// 最大生成数
-	const float TIME_CHARGE = 3.0f;		// チャージ時間
+	const float TIME_CHARGE = 1.5f;		// チャージ時間
 	const int TIME_FLOWERING = 60;	// 開花時間
 }
 
