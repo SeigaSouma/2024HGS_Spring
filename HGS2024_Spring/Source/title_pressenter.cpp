@@ -136,7 +136,7 @@ void CTitle_PressEnter::StateNone()
 		pInputKeyboard->GetTrigger(DIK_BACKSPACE)
 		)
 	{
-		CManager::GetInstance()->GetFade()->SetFade(CScene::MODE::MODE_GAME);
+		CManager::GetInstance()->GetFade()->SetFade(CScene::MODE::MODE_TUTORIAL);
 	}
 }
 

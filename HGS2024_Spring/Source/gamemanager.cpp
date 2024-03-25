@@ -227,13 +227,13 @@ void CGameManager::SceneTransition()
 
 		// BGMストップ
 		CManager::GetInstance()->GetSound()->StopSound();
-		/*if (m_nNowStage != 3)
+		if (m_nNowStage != 3)
 		{
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_BGM_GAME);
 		}
 		else {
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_BGM_BOSS);
-		}*/
+		}
 
 		// ゲーム開始時のフラグ
 		m_bGameStart = true;
