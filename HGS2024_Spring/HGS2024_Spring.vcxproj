@@ -35,6 +35,7 @@
     <ClCompile Include="Source\battlestart_effect.cpp" />
     <ClCompile Include="Source\beforebattle.cpp" />
     <ClCompile Include="Source\blackframe.cpp" />
+    <ClCompile Include="Source\busket.cpp" />
     <ClCompile Include="Source\camera.cpp" />
     <ClCompile Include="Source\collisionobject.cpp" />
     <ClCompile Include="Source\debugproc.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Source\battlestart_effect.h" />
     <ClInclude Include="Source\beforebattle.h" />
     <ClInclude Include="Source\blackframe.h" />
+    <ClInclude Include="Source\busket.h" />
     <ClInclude Include="Source\calculation.h" />
     <ClInclude Include="Source\camera.h" />
     <ClInclude Include="Source\collisionobject.h" />
