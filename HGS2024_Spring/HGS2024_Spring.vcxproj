@@ -109,6 +109,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\ranking.cpp" />
+    <ClCompile Include="Source\rankingbg.cpp" />
     <ClCompile Include="Source\rankingmanager.cpp" />
     <ClCompile Include="Source\rankingscore.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Source\pollen_gauge.h" />
     <ClInclude Include="Source\precompile.h" />
     <ClInclude Include="Source\ranking.h" />
+    <ClInclude Include="Source\rankingbg.h" />
     <ClInclude Include="Source\rankingmanager.h" />
     <ClInclude Include="Source\rankingscore.h" />
     <ClInclude Include="Source\renderer.h" />
