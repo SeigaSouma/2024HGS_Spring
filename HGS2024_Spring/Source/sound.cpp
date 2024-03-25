@@ -72,10 +72,6 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/enemyswing_02.wav", 0 },			// 敵攻撃スイング(早)
 	{ "data/SE/boost.wav", -1 },				// ブースト
 	{ "data/SE/wings.wav", -1 },				// 羽音
-	{ "data/SE/bloom.wav", -1 },				// 花が咲く
-	{ "data/SE/charge.wav", -1 },				// チャージ
-	{ "data/SE/boost.wav", -1 },				// ブースト
-	{ "data/SE/wings.wav", -1 },				// 羽音
 	{ "data/SE/bloom.wav", 0 },					// 花が咲く
 	{ "data/SE/charge.wav", 0 },				// チャージ
 
