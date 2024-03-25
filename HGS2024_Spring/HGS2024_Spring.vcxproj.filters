@@ -354,6 +354,9 @@
     <ClCompile Include="Source\objectX.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="Source\busket.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Xload.h">
@@ -676,6 +679,9 @@
     </ClInclude>
     <ClInclude Include="Source\objectX.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\busket.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
