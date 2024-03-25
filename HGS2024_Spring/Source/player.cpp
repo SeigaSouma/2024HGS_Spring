@@ -52,6 +52,8 @@ namespace
 	const float SUBVALUE_DASH = 0.1f;			// ダッシュの減算量
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
+	const float VELOCITY_SIDESTEP = 10.0f;
+
 	// ステータス
 	const float DEFAULT_RESPAWNHEAL = 0.45f;				// リスポーン時の回復割合
 	const float DEFAULT_SUBVALUE_GUARD = 30.0f;			// ガードのスタミナ減算量
@@ -507,9 +509,9 @@ void CPlayer::Controll()
 			m_state != STATE_DEADWAIT &&
 			m_state != STATE_FADEOUT)
 		{
-			m_pControlAtk->Attack(this);		// 攻撃操作
-			m_pControlDefence->Defence(this);	// 防御操作
-			m_pControlAvoid->Avoid(this);		// 回避操作
+			//m_pControlAtk->Attack(this);		// 攻撃操作
+			//m_pControlDefence->Defence(this);	// 防御操作
+			//m_pControlAvoid->Avoid(this);		// 回避操作
 		}
 		nMotionType = pMotion->GetType();
 		fRotDest = GetRotDest();
@@ -533,108 +535,24 @@ void CPlayer::Controll()
 
 		if ((pMotion->IsGetMove(nMotionType) == 1 || pMotion->IsGetCancelable()) &&
 			!m_pControlAtk->IsReserve() &&
-			//!m_sMotionFrag.bATK &&
 			m_state != STATE_KNOCKBACK &&
 			m_state != STATE_DEAD &&
 			m_state != STATE_DEADWAIT &&
 			m_state != STATE_FADEOUT)
 		{// 移動可能モーションの時
 
-			if (pInputKeyboard->GetPress(DIK_A) == true)
-			{//←キーが押された,左移動
+			if (pInputGamepad->GetTrigger(CInputGamepad::BUTTON::BUTTON_LB, 0))
+			{// 左移動
 
-				// 移動中にする
-				m_sMotionFrag.bMove = true;
-
-				if (pInputKeyboard->GetPress(DIK_W) == true)
-				{//A+W,左上移動
-
-					move.x += sinf(-D3DX_PI * 0.25f + Camerarot.y) * fMove;
-					move.z += cosf(-D3DX_PI * 0.25f + Camerarot.y) * fMove;
-					fRotDest = D3DX_PI * 0.75f + Camerarot.y;
-				}
-				else if (pInputKeyboard->GetPress(DIK_S) == true)
-				{//A+S,左下移動
-
-					move.x += sinf(-D3DX_PI * 0.75f + Camerarot.y) * fMove;
-					move.z += cosf(-D3DX_PI * 0.75f + Camerarot.y) * fMove;
-					fRotDest = D3DX_PI * 0.25f + Camerarot.y;
-				}
-				else
-				{//A,左移動
-
-					move.x += sinf(-D3DX_PI * 0.5f + Camerarot.y) * fMove;
-					move.z += cosf(-D3DX_PI * 0.5f + Camerarot.y) * fMove;
-					fRotDest = D3DX_PI * 0.5f + Camerarot.y;
-				}
+				move.x -= sinf(D3DX_PI * 0.25f + Camerarot.y) * VELOCITY_SIDESTEP;
 			}
-			else if (pInputKeyboard->GetPress(DIK_D) == true)
-			{//Dキーが押された,右移動
+			else if (pInputGamepad->GetTrigger(CInputGamepad::BUTTON::BUTTON_RB, 0))
+			{// 右移動
 
-				// 移動中にする
-				m_sMotionFrag.bMove = true;
-
-				if (pInputKeyboard->GetPress(DIK_W) == true)
-				{//D+W,右上移動
-
-					move.x += sinf(D3DX_PI * 0.25f + Camerarot.y) * fMove;
-					move.z += cosf(D3DX_PI * 0.25f + Camerarot.y) * fMove;
-					fRotDest = -D3DX_PI * 0.75f + Camerarot.y;
-				}
-				else if (pInputKeyboard->GetPress(DIK_S) == true)
-				{//D+S,右下移動
-
-					move.x += sinf(D3DX_PI * 0.75f + Camerarot.y) * fMove;
-					move.z += cosf(D3DX_PI * 0.75f + Camerarot.y) * fMove;
-					fRotDest = -D3DX_PI * 0.25f + Camerarot.y;
-				}
-				else
-				{//D,右移動
-
-					move.x += sinf(D3DX_PI * 0.5f + Camerarot.y) * fMove;
-					move.z += cosf(D3DX_PI * 0.5f + Camerarot.y) * fMove;
-					fRotDest = -D3DX_PI * 0.5f + Camerarot.y;
-				}
-			}
-			else if (pInputKeyboard->GetPress(DIK_W) == true)
-			{//Wが押された、上移動
-
-				// 移動中にする
-				m_sMotionFrag.bMove = true;
-				move.x += sinf(D3DX_PI * 0.0f + Camerarot.y) * fMove;
-				move.z += cosf(D3DX_PI * 0.0f + Camerarot.y) * fMove;
-				fRotDest = D3DX_PI * 1.0f + Camerarot.y;
-			}
-			else if (pInputKeyboard->GetPress(DIK_S) == true)
-			{//Sが押された、下移動
-
-				// 移動中にする
-				m_sMotionFrag.bMove = true;
-				move.x += sinf(D3DX_PI * 1.0f + Camerarot.y) * fMove;
-				move.z += cosf(D3DX_PI * 1.0f + Camerarot.y) * fMove;
-				fRotDest = D3DX_PI * 0.0f + Camerarot.y;
-			}
-			else
-			{
-				// 移動中かどうか
-				m_sMotionFrag.bMove = false;
+				move.x += sinf(D3DX_PI * 0.25f + Camerarot.y) * VELOCITY_SIDESTEP;
 			}
 
-			if (pInputGamepad->IsTipStick())
-			{// 左スティックが倒れてる場合
-
-				// 移動中にする
-				m_sMotionFrag.bMove = true;
-
-				// スティックの向き取得
-				float stickrot = pInputGamepad->GetStickRotL(m_nMyPlayerIdx);
-				UtilFunc::Transformation::RotNormalize(stickrot);
-
-				// 移動量と向き設定
-				move.x += sinf(stickrot + Camerarot.y) * fMove;
-				move.z += cosf(stickrot + Camerarot.y) * fMove;
-				fRotDest = D3DX_PI + stickrot + Camerarot.y;
-			}
+			move.z += cosf(D3DX_PI * 0.0f + Camerarot.y) * fMove;
 
 			if (m_sMotionFrag.bMove &&
 				!m_bJump)
@@ -654,10 +572,9 @@ void CPlayer::Controll()
 			}
 
 			if (m_bJump == false &&
-				(pInputKeyboard->GetTrigger(DIK_SPACE) == true ||
-					pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx)) &&
+				pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx) &&
 				!m_bTouchBeacon)
-			{// ジャンプ
+			{// ブースト
 
 				m_bJump = true;
 				m_sMotionFrag.bJump = true;
@@ -668,52 +585,6 @@ void CPlayer::Controll()
 				// サウンド再生
 				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_JUMP);
 			}
-		}
-		else if (pMotion->IsGetMove(nMotionType) == 0 &&
-			m_state != STATE_DEAD &&
-			m_state != STATE_FADEOUT)
-		{
-			if (pInputKeyboard->GetPress(DIK_A) == true)
-			{//←キーが押された,左移動
-
-				if (pInputKeyboard->GetPress(DIK_W) == true)
-				{//A+W,左上移動
-					fRotDest = D3DX_PI * 0.75f + Camerarot.y;
-				}
-				else if (pInputKeyboard->GetPress(DIK_S) == true)
-				{//A+S,左下移動
-					fRotDest = D3DX_PI * 0.25f + Camerarot.y;
-				}
-				else
-				{//A,左移動
-					fRotDest = D3DX_PI * 0.5f + Camerarot.y;
-				}
-			}
-			else if (pInputKeyboard->GetPress(DIK_D) == true)
-			{//Dキーが押された,右移動
-
-				if (pInputKeyboard->GetPress(DIK_W) == true)
-				{//D+W,右上移動
-					fRotDest = -D3DX_PI * 0.75f + Camerarot.y;
-				}
-				else if (pInputKeyboard->GetPress(DIK_S) == true)
-				{//D+S,右下移動
-					fRotDest = -D3DX_PI * 0.25f + Camerarot.y;
-				}
-				else
-				{//D,右移動
-					fRotDest = -D3DX_PI * 0.5f + Camerarot.y;
-				}
-			}
-			else if (pInputKeyboard->GetPress(DIK_W) == true)
-			{//Wが押された、上移動
-				fRotDest = D3DX_PI * 1.0f + Camerarot.y;
-			}
-			else if (pInputKeyboard->GetPress(DIK_S) == true)
-			{//Sが押された、下移動
-				fRotDest = D3DX_PI * 0.0f + Camerarot.y;
-			}
-
 		}
 
 		// 角度の正規化
@@ -804,8 +675,8 @@ void CPlayer::Controll()
 	}
 	else if (m_state != STATE_KNOCKBACK && m_state != STATE_DEAD && m_state != STATE_FADEOUT)
 	{
-		move.x += (0.0f - move.x) * 0.25f;
-		move.z += (0.0f - move.z) * 0.25f;
+		move.x += (0.0f - move.x) * 0.01f;
+		move.z += (0.0f - move.z) * 0.025f;
 	}
 
 
@@ -1573,6 +1444,12 @@ void CPlayer::AttackInDicision(CMotion::AttackInfo* pATKInfo, int nCntATK)
 void CPlayer::LimitPos()
 {
 	MyLib::Vector3 pos = GetPosition();
+	pos.y = 0.0f;
+	MyLib::Vector3 move = GetMove();
+	move.y = 0.0f;
+	SetPosition(pos);
+	SetMove(move);
+	return;
 
 	// エリア制限情報取得
 	CListManager<CLimitArea> limitareaList = CLimitArea::GetListObj();
