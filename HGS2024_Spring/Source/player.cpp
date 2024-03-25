@@ -48,7 +48,7 @@ namespace
 	const int INVINCIBLE_TIME = 0;				// 無敵の時間
 	const int DEADTIME = 120;					// 死亡時の時間
 	const int FADEOUTTIME = 60;					// フェードアウトの時間
-	const float MULTIPLIY_DASH = 1.875f;		// ダッシュの倍率
+	const float MULTIPLIY_DASH = 2.0f;		// ダッシュの倍率
 	const float TIME_DASHATTACK = 0.3f;			// ダッシュ攻撃に必要な時間
 	const int DEFAULT_STAMINA = 200;			// スタミナのデフォルト値
 	const float SUBVALUE_DASH = 0.1f;			// ダッシュの減算量
@@ -552,25 +552,21 @@ void CPlayer::Controll()
 			float ratio = m_fWalkTime / TIME_MAXVELOCITY;
 			UtilFunc::Transformation::ValueNormalize(ratio, 1.0f, 0.0f);
 
+			if (m_bDash)
+			{
+				fMove *= MULTIPLIY_DASH;
+			}
+
 			move.z += cosf(D3DX_PI * 0.0f) * (fMove * ratio);
 
 			m_sMotionFrag.bMove = true;
 
-			if (pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
+			if (!m_bDash &&
+				pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
 			{
-				m_pBusket->Lost();
-			}
-
-
-			if (m_bJump == false &&
-				pInputGamepad->GetPress(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
-			{// ブースト
-
 				m_bDash = true;
-			}
-			else
-			{
-				m_bDash = false;
+				m_pBusket->Lost();
+				move.z += 10.0f;
 			}
 
 
@@ -1761,7 +1757,11 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 		// 体力減らす
 		nLife -= nValue;
 
+		// 移動加速初期化
 		m_fWalkTime = TIME_START_VELOCITY;
+
+		// ダッシュ判定OFF
+		m_bDash = false;
 
 		// ゲームパッド情報取得
 		CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();

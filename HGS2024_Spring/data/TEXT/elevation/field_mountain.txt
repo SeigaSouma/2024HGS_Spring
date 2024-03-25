@@ -8,7 +8,7 @@ TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\glass.jpg
 #==============================================================================
 FIELDSET
 	POS = 0.00 0.00 0.00
-	BLOCK = 60 180
+	BLOCK = 60 200
 	SIZE = 400.00 400.00
 	VTXPOS
 	
