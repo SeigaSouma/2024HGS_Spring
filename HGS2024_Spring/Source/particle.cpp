@@ -726,9 +726,9 @@ void Pollen_Drop()
 		m_pos.x += m_move.x * 0.3f;
 		m_pos.y += m_move.y * 0.3f;
 
-		m_col = D3DXCOLOR(1.0f, 1.0f, 0.5f, 0.3f);
+		m_col = D3DXCOLOR(1.0f, 1.0f, 0.3f, 0.6f);
 
-		m_fRadius = 50.0f;
+		m_fRadius = 110.0f;
 
 		if (rand() % 3 == 0)
 		{
@@ -773,9 +773,9 @@ void Pollen_Lost()
 		m_pos.x += m_move.x * 0.3f;
 		m_pos.y += m_move.y * 0.3f;
 
-		m_col = D3DXCOLOR(1.0f, 1.0f, 0.5f, 0.8f);
+		m_col = D3DXCOLOR(1.0f, 1.0f, 0.3f, 1.0f);
 
-		m_fRadius = 80.0f;
+		m_fRadius = 200.0f;
 
 		if (rand() % 3 == 0)
 		{
