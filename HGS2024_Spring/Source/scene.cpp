@@ -20,6 +20,7 @@
 #include "game.h"
 #include "title.h"
 #include "result.h"
+#include "tutorial.h"
 #include "ranking.h"
 
 //==========================================================================
@@ -74,6 +75,10 @@ CScene *CScene::Create(CScene::MODE mode)
 		case CScene::MODE_GAME:
 		case CScene::MODE::MODE_GAMETUTORIAL:
 			pScene = CGame::Create(mode);
+			break;
+
+		case MODE_TUTORIAL:
+			pScene = CTutorial::Create();
 			break;
 
 		case CScene::MODE_RESULT:
