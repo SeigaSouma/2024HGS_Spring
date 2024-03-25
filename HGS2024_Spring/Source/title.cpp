@@ -104,12 +104,6 @@ HRESULT CTitle::Init()
 	// プレスエンター
 	m_pPressEnter = CTitle_PressEnter::Create(1.0f);
 
-	// 塵
-	CMyEffekseer::GetInstance()->SetEffect(
-		CMyEffekseer::EFKLABEL::EFKLABEL_TITLEBLUR,
-		MyLib::Vector3(185.0f, 65.0f, -148.0f),
-		0.0f, 0.0f, 10.0f, false);
-
 	// シーンの種類
 	m_SceneType = SCENETYPE::SCENETYPE_NONE;
 
