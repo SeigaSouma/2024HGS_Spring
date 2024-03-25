@@ -82,6 +82,7 @@ public:
 		LABEL_SE_WINGS,					// 羽音
 		LABEL_SE_BLOOM,					// 花が咲く
 		LABEL_SE_CHARGE,				// チャージ
+		LABEL_SE_GOAL,				// ゴール
 		LABEL_MAX,
 	};
 
