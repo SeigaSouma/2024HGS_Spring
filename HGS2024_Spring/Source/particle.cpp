@@ -33,6 +33,7 @@ void Fire_StandTorch();
 void BattleStart();
 void FloweringCharge();
 void Pollen_Drop();
+void Pollen_Lost();
 
 //==========================================================================
 // パーティクルの初期化処理
@@ -123,7 +124,10 @@ void my_particle::Create(const MyLib::Vector3& pos, TYPE nType)
 		m_nLife = 30;
 		Pollen_Drop();
 		break;
-
+	case TYPE_POLLENLOST:
+		m_nLife = 30;
+		Pollen_Lost();
+		break;
 	}
 }
 
@@ -725,6 +729,53 @@ void Pollen_Drop()
 		m_col = D3DXCOLOR(1.0f, 1.0f, 0.5f, 0.3f);
 
 		m_fRadius = 50.0f;
+
+		if (rand() % 3 == 0)
+		{
+			m_fRadius *= 0.95f;
+		}
+		else if (rand() % 3 == 1)
+		{
+			m_fRadius *= 0.9f;
+		}
+		else if (rand() % 3 == 2)
+		{
+			m_fRadius *= 0.8f;
+		}
+
+		// エフェクトの設定
+		CEffect3D::Create(
+			m_pos,
+			m_move,
+			m_col,
+			m_fRadius,
+			m_nLife,
+			CEffect3D::MOVEEFFECT_ADD, CEffect3D::TYPE_SMOKEBLACK);
+	}
+}
+
+//==========================================================================
+// ぶつかって花粉落とす
+//==========================================================================
+void Pollen_Lost()
+{
+
+	for (int nCntUse = 0; nCntUse < 10; nCntUse++)
+	{
+		m_fMove = (float)(UtilFunc::Transformation::Random(0, 10)) / 10 + 2.0f;		// 移動量
+		m_fAngle = (float)(UtilFunc::Transformation::Random(-314, 314)) / 100.0f;	// 角度
+
+		// 移動量の設定
+		m_move.x = sinf((float)(UtilFunc::Transformation::Random(-314, 314)) / 100.0f) * m_fMove;
+		m_move.y = cosf((float)(UtilFunc::Transformation::Random(-314, 314)) / 100.0f) * m_fMove;
+		m_move.z = cosf((float)(UtilFunc::Transformation::Random(-314, 314)) / 100.0f) * m_fMove;
+
+		m_pos.x += m_move.x * 0.3f;
+		m_pos.y += m_move.y * 0.3f;
+
+		m_col = D3DXCOLOR(1.0f, 1.0f, 0.5f, 0.8f);
+
+		m_fRadius = 80.0f;
 
 		if (rand() % 3 == 0)
 		{

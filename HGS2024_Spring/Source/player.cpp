@@ -422,6 +422,7 @@ void CPlayer::Update()
 	// 状態更新
 	UpdateState();
 
+	//花粉わふわふ処理
 	my_particle::Create(GetPosition() + MyLib::Vector3(0.0f,100.0f,0.0f), my_particle::TYPE_POLLENDROP);
 
 	// 位置取得
@@ -1473,6 +1474,9 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 		// ダッシュ判定OFF
 		m_bDash = false;
 		m_pBusket->Lost();
+
+		//花粉ばさぁ処理
+		my_particle::Create(GetPosition() + MyLib::Vector3(0.0f, 100.0f, 0.0f), my_particle::TYPE_POLLENLOST);
 
 		// ゲームパッド情報取得
 		CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();

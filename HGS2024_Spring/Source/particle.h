@@ -29,6 +29,7 @@ namespace my_particle
 		TYPE_BATTLESTART,		// 戦闘開始
 		TYPE_FLOWERINGCHARGE,		// 開花チャージ
 		TYPE_POLLENDROP,	//花粉落とす
+		TYPE_POLLENLOST,	//ぶつかって花粉落とす
 		TYPE_MAX
 	};
 
