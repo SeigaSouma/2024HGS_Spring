@@ -102,6 +102,7 @@
     <ClCompile Include="Source\pickupguide.cpp" />
     <ClCompile Include="Source\player.cpp" />
     <ClCompile Include="Source\playercontrol.cpp" />
+    <ClCompile Include="Source\pollen_gauge.cpp" />
     <ClCompile Include="Source\precompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
@@ -214,6 +215,7 @@
     <ClInclude Include="Source\pickupguide.h" />
     <ClInclude Include="Source\player.h" />
     <ClInclude Include="Source\playercontrol.h" />
+    <ClInclude Include="Source\pollen_gauge.h" />
     <ClInclude Include="Source\precompile.h" />
     <ClInclude Include="Source\ranking.h" />
     <ClInclude Include="Source\rankingmanager.h" />
