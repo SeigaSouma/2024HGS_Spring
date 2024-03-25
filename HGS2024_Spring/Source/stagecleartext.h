@@ -36,18 +36,15 @@ private:
 	// 状態列挙
 	enum eState
 	{
-		STATE_NONE = 0,		// なにもなし
-		STATE_SCALEDOWN,	// 縮小
-		STATE_SCALENONE,	// 整い
-		STATE_FADEOUT,		// フェードアウト
+		STATE_EXPANSION = 0,
+		STATE_EXPNONE,
+		STATE_FADEOUT,
 		STATE_MAX
 	};
 
 	// メンバ関数
-	void StateNone();		// 何もない状態
-	void StateScaleUP();	// 拡大状態
-	void StateScaleDOWN();	// 縮小状態
-	void StateScaleNone();	// 整い状態
+	void StateExpansion();	// 拡大
+	void StateExpNone();	// 拡大後何もしない
 	void StateFadeOut();	// フェードアウト状態
 
 	// メンバ変数

@@ -74,11 +74,6 @@ private:
 	// ƒƒ“ƒoŠÖ”
 	//=============================
 	// ó‘ÔŠÖ”
-	void StateGetTogether();	// W‚Ü‚é
-	void StateCharge();			// —­‚ß
-	void StateStings();	// h‚³‚é
-	void StateScale();	// Šgk
-
 	void StateExpansion();	//Šg‘å
 	void StateWait();		//‘Ò‚¿
 	void StateDrop();		//—‚Æ‚·
