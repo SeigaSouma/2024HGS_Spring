@@ -9,6 +9,7 @@
 #define _BUSKET_H_	// 二重インクルード防止
 
 #include "object.h"
+class CPollen_Gauge;
 
 //==========================================================================
 // クラス定義
@@ -38,6 +39,8 @@ public:
 	bool IsEmpty(void) { return m_bEmpty; }
 
 private:
+
+	CPollen_Gauge* m_pPollenGauge;
 	int m_nPollen;				//現在の花粉量
 	const int m_nMaxPollen;		//最大花粉量
 	bool m_bEmpty;				//からっぽになったかどうか

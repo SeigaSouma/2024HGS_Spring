@@ -7,6 +7,7 @@
 #include "busket.h"
 #include "manager.h"
 #include "camera.h"
+#include "pollen_gauge.h"
 
 //==========================================================================
 // ’è”’è‹`
@@ -71,6 +72,8 @@ HRESULT CBusket::Init()
 	// ‰Ô•²—Ê‰Šú’l“ü‚ê‚é
 	m_nPollen = m_nMaxPollen;
 
+	m_pPollenGauge = CPollen_Gauge::Create(MyLib::Vector3(640.0f, 600.0f, 0.0f), m_nMaxPollen);
+
 	return S_OK;
 }
 
@@ -88,7 +91,8 @@ void CBusket::Uninit()
 //==========================================================================
 void CBusket::Update()
 {
-
+	m_pPollenGauge->SetValue(m_nPollen);
+	m_pPollenGauge->Update();
 }
 
 //==========================================================================
@@ -97,6 +101,7 @@ void CBusket::Update()
 void CBusket::Draw()
 {
 	
+	m_pPollenGauge->Draw();
 }
 
 //==========================================================================

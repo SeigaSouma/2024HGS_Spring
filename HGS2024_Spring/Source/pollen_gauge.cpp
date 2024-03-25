@@ -14,12 +14,12 @@
 //==========================================================================
 namespace
 {
-	float DEFAULT_WIDTH = 150.0f;
-	float DEFAULT_HEIGHT = 20.0f;
+	float DEFAULT_WIDTH = 500.0f;
+	float DEFAULT_HEIGHT = 60.0f;
 	const char* USE_TEXTURE[] =
 	{
 		"data\\TEXTURE\\hpgauge\\black.png",
-		"data\\TEXTURE\\hpgauge\\staminagauhge.png",
+		"data\\TEXTURE\\hpgauge\\pollengauhge.png",
 	};
 }
 
@@ -88,10 +88,12 @@ HRESULT CPollen_Gauge::Init()
 		m_apGauge[cnt]->SetOriginPosition(GetPosition());
 
 		// 種類の設定
-		m_apGauge[cnt]->SetType(CObject::TYPE_OBJECT2D);
+		m_apGauge[cnt]->SetType(CObject::TYPE::TYPE_NONE);
 		m_apGauge[cnt]->SetSize(D3DXVECTOR2(DEFAULT_WIDTH, DEFAULT_HEIGHT));
 		m_apGauge[cnt]->SetMoveFactor(0.25f);	// 移動の係数設定
 	}
+	
+	SetType(CObject::TYPE_OBJECT2D);
 
 	return S_OK;
 }
@@ -110,20 +112,20 @@ void CPollen_Gauge::Uninit()
 //==========================================================================
 void CPollen_Gauge::Update()
 {
-	//for (int i = 0; i < VTXTYPE::VTXTYPE_MAX; i++)
-	//{
-	//	// サイズ取得
-	//	D3DXVECTOR2 size = m_apGauge[i]->GetSize();
+	for (int i = 0; i < VTXTYPE::VTXTYPE_MAX; i++)
+	{
+		// サイズ取得
+		D3DXVECTOR2 size = m_apGauge[i]->GetSize();
 
-	//	D3DXVECTOR2* pTex = m_apGauge[i]->GetTex();
+		D3DXVECTOR2* pTex = m_apGauge[i]->GetTex();
 
-	//	float ratio = size.x / LENGTH_TEXTUREREPEAT;
+		float ratio = size.x / 80.0f;
+		m_apGauge[i]->Update();
 
-	//	pTex[1] = D3DXVECTOR2(ratio, 0.0f);
-	//	pTex[3] = D3DXVECTOR2(ratio, 1.0f);
-
-	//	SetVtx(i);
-	//}
+		pTex[1] = D3DXVECTOR2(ratio, 0.0f);
+		pTex[3] = D3DXVECTOR2(ratio, 1.0f);
+		SetVtx(i);
+	}
 }
 
 //==========================================================================
@@ -131,7 +133,10 @@ void CPollen_Gauge::Update()
 //==========================================================================
 void CPollen_Gauge::Draw()
 {
-	
+	for (int i = 0; i < VTXTYPE::VTXTYPE_MAX; i++)
+	{
+		m_apGauge[i]->Draw();
+	}
 }
 
 //==========================================================================

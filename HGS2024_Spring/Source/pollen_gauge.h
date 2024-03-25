@@ -26,7 +26,7 @@ public:
 	// オーバーライドされた関数
 	HRESULT Init();
 	void Uninit();
-	void Update();
+	void Update() override;
 	void Draw();
 
 	void SetValue(int nValue);

@@ -30,6 +30,7 @@
 #include "collisionobject.h"
 #include "limitarea.h"
 #include "MyEffekseer.h"
+#include "busket.h"
 
 // 使用クラス
 #include "playercontrol.h"
@@ -207,6 +208,9 @@ HRESULT CPlayer::Init()
 	ChangeDefenceControl(DEBUG_NEW CPlayerControlDefence());
 	ChangeAvoidControl(DEBUG_NEW CPlayerControlAvoid());
 	ChangeGuardGrade(DEBUG_NEW CPlayerGuard());
+
+	// かご生成
+	m_pBusket = CBusket::Create(500);
 
 	//// スキルポイント生成
 	//m_pSkillPoint = CSkillPoint::Create();
@@ -546,6 +550,11 @@ void CPlayer::Controll()
 			move.z += cosf(D3DX_PI * 0.0f) * (fMove * ratio);
 
 			m_sMotionFrag.bMove = true;
+
+			if (pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
+			{
+				m_pBusket->Lost();
+			}
 
 
 			if (m_bJump == false &&
