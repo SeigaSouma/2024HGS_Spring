@@ -406,6 +406,16 @@ void CBattleStart::StateDrop()
 		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_BATTLESTART_CHARGE);
 
 		SetSize(GetSizeOrigin());
+
+		// 完了後のテクスチャに切替
+		int nTexIdx = CTexture::GetInstance()->Regist(TEXT_TEXTURE_COMPLETE);
+		BindTexture(nTexIdx);
+ 
+		// 刺さりパーティクル生成
+		my_particle::Create(GetPosition(), my_particle::TYPE::TYPE_BATTLESTART);
+
+		// 文字エフェクト生成
+		CBattleStart_Effect::Create(GetPosition());
 		return;
 	}
 

@@ -31,6 +31,7 @@ void OffSetting();
 void Fire_WallTorch();
 void Fire_StandTorch();
 void BattleStart();
+void FloweringCharge();
 
 //==========================================================================
 // パーティクルの初期化処理
@@ -112,6 +113,13 @@ void my_particle::Create(const MyLib::Vector3& pos, TYPE nType)
 		m_nLife = 30;
 		BattleStart();
 		break;
+
+	case TYPE_FLOWERINGCHARGE:
+		m_nLife = 30;
+		FloweringCharge();
+		break;
+
+
 	}
 }
 
@@ -646,5 +654,48 @@ void BattleStart()
 			m_fRadius,
 			m_nLife,
 			CEffect2D::MOVEEFFECT_ADD, CEffect2D::TYPE_JUJI);
+	}
+}
+
+
+//==========================================================================
+// 開花チャージ
+//==========================================================================
+void FloweringCharge(void)
+{
+	MyLib::Vector3 pos;
+
+	for (int nCntUse = 0; nCntUse < 2; nCntUse++)
+	{
+		float fBuff = (float)UtilFunc::Transformation::Random(80, 100) * 0.01f;
+		float fDistance = 400.0f * fBuff;
+		m_nLife = (int)(20.0f * fBuff);
+
+		// 出現位置
+		pos = UtilFunc::Transformation::GetRandomPositionSphere(m_pos, fDistance);
+
+		m_col = D3DXCOLOR(
+			0.1f + UtilFunc::Transformation::Random(-100, 100) * 0.001f,
+			0.9f + UtilFunc::Transformation::Random(-100, 100) * 0.001f,
+			0.1f + UtilFunc::Transformation::Random(-100, 100) * 0.001f,
+			1.0f);
+
+		// 半径設定
+		m_fRadius = 120.0f * fBuff;
+
+		// エフェクトの設定
+		CEffect3D* pEffect = CEffect3D::Create(
+			pos,
+			mylib_const::DEFAULT_VECTOR3,
+			m_col,
+			m_fRadius,
+			m_nLife,
+			CEffect3D::MOVEEFFECT_SUB,
+			CEffect3D::TYPE::TYPE_JUJI2,
+			0.0f);
+
+		// 目標の位置設定
+		pEffect->SetPositionDest(m_pos);
+		pEffect->SetRotation(MyLib::Vector3(0.0f, 0.0f, UtilFunc::Transformation::GetRandomPi()));
 	}
 }

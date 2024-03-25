@@ -49,6 +49,8 @@
     <ClCompile Include="Source\enemy_gobelin.cpp" />
     <ClCompile Include="Source\explosion.cpp" />
     <ClCompile Include="Source\fade.cpp" />
+    <ClCompile Include="Source\flower_bud.cpp" />
+    <ClCompile Include="Source\flower_decide.cpp" />
     <ClCompile Include="Source\fog.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\gamemanager.cpp" />
@@ -162,6 +164,8 @@
     <ClInclude Include="Source\enemy_gobelin.h" />
     <ClInclude Include="Source\explosion.h" />
     <ClInclude Include="Source\fade.h" />
+    <ClInclude Include="Source\flower_bud.h" />
+    <ClInclude Include="Source\flower_decide.h" />
     <ClInclude Include="Source\fog.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gamemanager.h" />

@@ -32,6 +32,7 @@
 #include "MyEffekseer.h"
 #include "busket.h"
 #include "map.h"
+#include "flower_bud.h"
 
 // 使用クラス
 #include "playercontrol.h"
@@ -213,6 +214,7 @@ HRESULT CPlayer::Init()
 
 	// かご生成
 	m_pBusket = CBusket::Create(10000);
+	CFlowerBud::Create(MyLib::Vector3(0.0f, 0.0f, 0.0f), 10000, 2000);
 
 
 	m_fWalkTime = TIME_START_VELOCITY;
@@ -753,6 +755,12 @@ void CPlayer::Controll()
 	{
 		CCollisionObject::Create(GetPosition(), mylib_const::DEFAULT_VECTOR3, 100000.0f, 3, 10000, CCollisionObject::TAG_PLAYER);
 	}
+
+	if (pInputKeyboard->GetTrigger(DIK_RETURN) == true)
+	{
+		CFlowerBud::GetInstance()->SetSatate(CFlowerBud::STATE::STATE_CHARGE);
+	}
+
 	if (pInputKeyboard->GetRepeat(DIK_RIGHT, 4) == true){
 		//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_NORMALATK_HIT2);
 		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_TURN, false);

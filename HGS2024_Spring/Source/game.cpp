@@ -32,6 +32,7 @@
 #include "limitarea.h"
 #include "particle.h"
 #include "myeffekseer.h"
+#include "flower_bud.h"
 
 //==========================================================================
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
