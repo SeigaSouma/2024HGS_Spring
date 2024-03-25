@@ -56,7 +56,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// âÒîÇÃå∏éZó 
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 0.0f;
+	const float GOAL_Z = 60000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// ç≈çÇë¨Ç…Ç»ÇÈÇ‹Ç≈ÇÃéûä‘
 	const float TIME_START_VELOCITY = 0.2f;	// ç≈çÇë¨Ç…Ç»ÇÈÇ‹Ç≈ÇÃéûä‘
 	const float TIME_FLOWERING = 2.0f;		// äJâ‘Ç‹Ç≈ÇÃéûä‘
@@ -1189,8 +1189,7 @@ void CPlayer::LimitPos()
 {
 	MyLib::Vector3 pos = GetPosition();
 
-	if (m_state != STATE_FLOWERING &&
-		m_state != STATE_AFTERFLOWERING)
+	if (m_state != STATE_AFTERFLOWERING)
 	{
 		pos.y = 0.0f;
 	}
