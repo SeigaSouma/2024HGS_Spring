@@ -100,7 +100,7 @@ void CBusket::Update()
 	}
 
 	m_pPollenGauge->SetValue(m_nPollen);
-	m_pPollenGauge->Update();
+	//m_pPollenGauge->Update();
 }
 
 //==========================================================================
@@ -109,7 +109,7 @@ void CBusket::Update()
 void CBusket::Draw()
 {
 	
-	m_pPollenGauge->Draw();
+	//m_pPollenGauge->Draw();
 }
 
 //==========================================================================

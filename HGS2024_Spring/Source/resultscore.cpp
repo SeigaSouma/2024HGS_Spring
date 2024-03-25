@@ -37,13 +37,15 @@ CResultScore::~CResultScore()
 //==========================================================================
 // ¶¬ˆ—
 //==========================================================================
-CResultScore* CResultScore::Create()
+CResultScore* CResultScore::Create(int score)
 {
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
 	CResultScore* pMarker = DEBUG_NEW CResultScore;
 
 	if (pMarker != nullptr)
 	{
+		pMarker->m_nScore = score;
+
 		// ‰Šú‰»ˆ—
 		pMarker->Init();
 	}
@@ -93,6 +95,7 @@ void CResultScore::Kill()
 //==========================================================================
 void CResultScore::Update()
 {
+	m_pScore->SetValue(m_nScore);
 	m_pScore->Update();
 }
 
@@ -102,7 +105,6 @@ void CResultScore::Update()
 void CResultScore::CreateScore()
 {
 	// ¡‰ñ‚Ì•]‰¿î•ñŽæ“¾
-
 	m_pScore = CMultiNumber::Create(
 		MyLib::Vector3(SCREEN_HEIGHT * 0.5f, SCREEN_WIDTH * 0.5f, 0.0f),
 		SCORESIZE,
@@ -116,6 +118,8 @@ void CResultScore::CreateScore()
 
 	// ‰EŠñ‚¹‚ÉÝ’è
 	m_pScore->SetAlignmentType(CMultiNumber::AlignmentType::ALIGNMENT_RIGHT);
+
+	m_pScore->SetValue(m_nScore);
 
 	// FÝ’è
 	m_pScore->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

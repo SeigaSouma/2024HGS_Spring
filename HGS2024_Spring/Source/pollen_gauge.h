@@ -18,7 +18,7 @@ class CPollen_Gauge : public CObject
 {
 public:
 
-	CPollen_Gauge(int nPriority = 6);
+	CPollen_Gauge(int nPriority = 11);
 	~CPollen_Gauge();
 
 	static CPollen_Gauge *Create(MyLib::Vector3 pos, int nMaxPollen);
