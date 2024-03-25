@@ -42,6 +42,7 @@ CFlowerBud::CFlowerBud(int nPriority) : CObjectX(nPriority)
 	m_state = STATE::STATE_WAIT;	// 状態
 	m_fStateTime = 0.0f;			// 状態タイマー
 	m_fRatio = 0.0f;				// 割合
+	m_pScore = nullptr;				// 生成数スコア
 }
 
 //==========================================================================
@@ -105,6 +106,8 @@ HRESULT CFlowerBud::Init()
 //==========================================================================
 void CFlowerBud::Uninit()
 {
+
+
 	m_ThisPtr = nullptr;
 
 	// 終了処理
