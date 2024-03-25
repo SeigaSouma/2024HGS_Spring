@@ -565,7 +565,7 @@ void BattleStart()
 				m_col,
 				m_fRadius,
 				50,
-				CEffect2D::MOVEEFFECT_ADD, CEffect2D::TYPE_NORMAL);
+				CEffect2D::MOVEEFFECT_ADD, CEffect2D::TYPE::TYPE_JUJI);
 		}
 	}
 
@@ -619,7 +619,7 @@ void BattleStart()
 				m_col,
 				m_fRadius,
 				m_nLife,
-				CEffect2D::MOVEEFFECT_SUB, CEffect2D::TYPE_NORMAL);
+				CEffect2D::MOVEEFFECT_SUB, CEffect2D::TYPE::TYPE_JUJI);
 		}
 	}
 
@@ -661,7 +661,7 @@ void BattleStart()
 			m_col,
 			m_fRadius,
 			m_nLife,
-			CEffect2D::MOVEEFFECT_ADD, CEffect2D::TYPE_JUJI);
+			CEffect2D::MOVEEFFECT_ADD, CEffect2D::TYPE::TYPE_JUJI);
 	}
 }
 
