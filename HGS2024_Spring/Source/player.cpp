@@ -212,7 +212,7 @@ HRESULT CPlayer::Init()
 	ChangeGuardGrade(DEBUG_NEW CPlayerGuard());
 
 	// かご生成
-	m_pBusket = CBusket::Create(500);
+	m_pBusket = CBusket::Create(10000);
 
 
 	m_fWalkTime = TIME_START_VELOCITY;
@@ -565,7 +565,7 @@ void CPlayer::Controll()
 				pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
 			{
 				m_bDash = true;
-				m_pBusket->Lost();
+				m_pBusket->Boost();
 				move.z += 10.0f;
 			}
 
@@ -1762,6 +1762,7 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 
 		// ダッシュ判定OFF
 		m_bDash = false;
+		m_pBusket->Lost();
 
 		// ゲームパッド情報取得
 		CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
