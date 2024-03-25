@@ -35,10 +35,12 @@ public:
 
 	//æ“¾
 	int GetPollen(void) { return m_nPollen; }
+	bool IsEmpty(void) { return m_bEmpty; }
 
 private:
 	int m_nPollen;				//Œ»İ‚Ì‰Ô•²—Ê
 	const int m_nMaxPollen;		//Å‘å‰Ô•²—Ê
+	bool m_bEmpty;				//‚©‚ç‚Á‚Û‚É‚È‚Á‚½‚©‚Ç‚¤‚©
 };
 
 
