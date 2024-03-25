@@ -56,9 +56,10 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 60000.0f;
+	const float GOAL_Z = 0.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// 最高速になるまでの時間
 	const float TIME_START_VELOCITY = 0.2f;	// 最高速になるまでの時間
+	const float TIME_FLOWERING = 1.0f;		// 開花までの時間
 
 	// ステータス
 	const float DEFAULT_RESPAWNHEAL = 0.45f;			// リスポーン時の回復割合
@@ -93,6 +94,7 @@ CPlayer::STATE_FUNC CPlayer::m_StateFunc[] =
 	&CPlayer::StateAvoid,		// 回避
 	&CPlayer::StatePrayer,		// 祈り
 	&CPlayer::StateCharge,		// チャージ
+	&CPlayer::StateFlowering,	// 開花
 };
 
 //==========================================================================
@@ -756,11 +758,6 @@ void CPlayer::Controll()
 		CCollisionObject::Create(GetPosition(), mylib_const::DEFAULT_VECTOR3, 100000.0f, 3, 10000, CCollisionObject::TAG_PLAYER);
 	}
 
-	if (pInputKeyboard->GetTrigger(DIK_RETURN) == true)
-	{
-		CFlowerBud::GetInstance()->SetSatate(CFlowerBud::STATE::STATE_CHARGE);
-	}
-
 	if (pInputKeyboard->GetRepeat(DIK_RIGHT, 4) == true){
 		//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_NORMALATK_HIT2);
 		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_TURN, false);
@@ -828,7 +825,8 @@ void CPlayer::MotionSet()
 		m_state == STATE_CHARGE ||
 		m_state == STATE_FADEOUT ||
 		m_state == STATE_KNOCKBACK ||
-		m_state == STATE_PRAYER)
+		m_state == STATE_PRAYER ||
+		m_state == STATE_FLOWERING)
 	{
 		return;
 	}
@@ -1074,6 +1072,10 @@ void CPlayer::AttackAction(CMotion::AttackInfo ATKInfo, int nCntATK)
 
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_WALK2);
 		}
+		break;
+
+	case MOTION_FLOWERING:
+		CFlowerBud::GetInstance()->SetSatate(CFlowerBud::STATE::STATE_CHARGE);
 		break;
 
 	case MOTION::MOTION_DASH:
@@ -2076,6 +2078,50 @@ void CPlayer::StateCharge()
 	
 
 	
+}
+
+//==========================================================================
+// 開花
+//==========================================================================
+void CPlayer::StateFlowering()
+{
+	// モーション取得
+	CMotion* pMotion = GetMotion();
+	if (pMotion == nullptr)
+	{
+		return;
+	}
+
+	SetMove(0.0f);
+
+	int nType = pMotion->GetType();
+	if (nType != MOTION::MOTION_FLOWERING)
+	{
+		pMotion->Set(MOTION::MOTION_FLOWERING);
+		m_fWalkTime = 0.0f;
+		m_posKnokBack = GetPosition();
+		//SetOriginPosition(GetPosition());
+	}
+
+	m_fWalkTime += CManager::GetInstance()->GetDeltaTime();
+
+	if (m_fWalkTime <= TIME_FLOWERING)
+	{
+		MyLib::Vector3 pos = GetPosition();
+		MyLib::Vector3 rot = GetRotation();
+		pos.x = UtilFunc::Correction::EasingLinear(m_posKnokBack.x, CFlowerBud::GetInstance()->GetPosition().x - 200.0f, 0.0f, TIME_FLOWERING, m_fWalkTime);
+		pos.z = UtilFunc::Correction::EasingLinear(m_posKnokBack.z, CFlowerBud::GetInstance()->GetPosition().z, 0.0f, TIME_FLOWERING, m_fWalkTime);
+		rot.y = UtilFunc::Correction::EasingLinear(D3DX_PI, D3DX_PI * 1.5f, 0.0f, TIME_FLOWERING, m_fWalkTime);
+		SetPosition(pos);
+		SetRotation(rot);
+		SetRotDest(rot.y);
+	}
+
+	if (nType == MOTION::MOTION_FLOWERING &&
+		pMotion->IsFinish())
+	{
+		m_state = STATE_NONE;
+	}
 }
 
 //==========================================================================

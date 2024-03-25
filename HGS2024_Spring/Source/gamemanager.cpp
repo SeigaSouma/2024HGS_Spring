@@ -131,11 +131,11 @@ void CGameManager::Update()
 		break;
 
 	case CGameManager::SceneType::SCENE_MAINCLEAR:
-		m_bControll = true;
+		m_bControll = false;
 		break;
 
 	case SceneType::SCENE_MAINRESULT:
-		m_bControll = true;
+		m_bControll = false;
 		break;
 
 	case SceneType::SCENE_DURING_MAINRESULT:
