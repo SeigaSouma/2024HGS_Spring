@@ -103,6 +103,15 @@ HRESULT CPollen_Gauge::Init()
 //==========================================================================
 void CPollen_Gauge::Uninit()
 {
+	for (int cnt = 0; cnt < VTXTYPE_MAX; cnt++)
+	{
+		if (m_apGauge[cnt] == nullptr)
+		{
+			continue;
+		}
+		m_apGauge[cnt]->Uninit();
+		m_apGauge[cnt] = nullptr;
+	}
 	// î•ñíœ
 	Release();
 }
@@ -125,6 +134,8 @@ void CPollen_Gauge::Update()
 		pTex[1] = D3DXVECTOR2(ratio, 0.0f);
 		pTex[3] = D3DXVECTOR2(ratio, 1.0f);
 		SetVtx(i);
+
+		m_apGauge[i]->SetEnableDisp(IsDisp());
 	}
 }
 

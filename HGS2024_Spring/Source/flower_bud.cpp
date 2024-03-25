@@ -20,7 +20,7 @@ namespace
 	const char* MODEL = "data\\MODEL\\flower\\ranunculus.x";	// モデルファイル
 	const int MAX_SPAWNNUM = 2048;		// 最大生成数
 	const float TIME_CHARGE = 1.5f;		// チャージ時間
-	const int TIME_FLOWERING = 60;	// 開花時間
+	const int TIME_FLOWERING = 100;	// 開花時間
 }
 
 //==========================================================================
@@ -123,6 +123,12 @@ void CFlowerBud::Update()
 	(this->*(m_StateFuncList[m_state]))();
 }
 
+void CFlowerBud::SetCurrentPollen(int maxPollen, int pollen)
+{
+	m_fRatio = static_cast<float>(pollen) / static_cast<float>(maxPollen);
+	m_nSpawnNum = MAX_SPAWNNUM * m_fRatio;	// 生成数
+}
+
 //==========================================================================
 // 溜め
 //==========================================================================
@@ -149,12 +155,13 @@ void CFlowerBud::StateFlowering()
 	m_fStateTime++;
 
 	int num = m_nSpawnNum / TIME_FLOWERING;
+	//CManager::GetInstance()->GetCamera()->SetLenDest(4000.0f, 2, 1.0f, 0.015f);
 
 	for (int i = 0; i < num; i++)
 	{
 		MyLib::Vector3 move;
-		move.x = UtilFunc::Transformation::Random(-40, 40) * 10.0f + 1.0f;
-		move.z = UtilFunc::Transformation::Random(-40, 40) * 10.0f + 1.0f;
+		move.x = UtilFunc::Transformation::Random(-40, 40) * 10.0f;
+		move.z = UtilFunc::Transformation::Random(-40, 40) * 10.0f;
 
 		CDecideFlower::Create(GetPosition(), move);
 	}

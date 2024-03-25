@@ -34,6 +34,8 @@ public:
 	void Lost(void);
 	void Boost(void);
 
+	void SetDisp(bool disp);
+
 	//Žæ“¾
 	int GetPollen(void) { return m_nPollen; }
 	bool IsEmpty(void) { return m_bEmpty; }

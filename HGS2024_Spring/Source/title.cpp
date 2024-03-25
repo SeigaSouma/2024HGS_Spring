@@ -22,7 +22,7 @@
 namespace
 {
 	const float TIME_FADELOGO = 0.6f;	// ロゴのフェードアウト時間
-	const char* TEXTURE = "data\\TEXTURE\\title\\titlelogo3.png";
+	const char* TEXTURE = "data\\TEXTURE\\title\\title.png";
 }
 
 //==========================================================================

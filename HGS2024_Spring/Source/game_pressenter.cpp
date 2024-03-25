@@ -1,11 +1,11 @@
 //=============================================================================
 // 
-// タイトルエンター処理 [title_pressenter.cpp]
+// タイトルエンター処理 [game_pressenter.cpp]
 // Author : 相馬靜雅
 // 
 //=============================================================================
-#include "title_pressenter.h"
-#include "title.h"
+#include "game_pressenter.h"
+#include "game.h"
 #include "manager.h"
 #include "sound.h"
 #include "calculation.h"
@@ -17,24 +17,24 @@
 //==========================================================================
 namespace
 {
-	const char* TEXTURE = "data\\TEXTURE\\title\\enter.png";
+	const char* TEXTURE = "data\\TEXTURE\\resultscore\\enter.png";
 	const float TIME_TUTORIAL_FADEOUT = 0.3f;	// チュートリアル確認のフェードアウト
 }
 
 //==========================================================================
 // 関数ポインタ
 //==========================================================================
-CTitle_PressEnter::STATE_FUNC CTitle_PressEnter::m_StateFunc[] =
+CGame_PressEnter::STATE_FUNC CGame_PressEnter::m_StateFunc[] =
 {
-	&CTitle_PressEnter::StateNone,		// なし
-	&CTitle_PressEnter::StateFadeIn,	// フェードイン
-	&CTitle_PressEnter::StateTutorial_FadeOut,		// チュートリアル確認のフェードアウト
+	&CGame_PressEnter::StateNone,		// なし
+	&CGame_PressEnter::StateFadeIn,	// フェードイン
+	&CGame_PressEnter::StateTutorial_FadeOut,		// チュートリアル確認のフェードアウト
 };
 
 //==========================================================================
 // コンストラクタ
 //==========================================================================
-CTitle_PressEnter::CTitle_PressEnter(float fadetime, int nPriority) : m_fFadeOutTime(fadetime), CObject2D(nPriority)
+CGame_PressEnter::CGame_PressEnter(float fadetime, int nPriority) : m_fFadeOutTime(fadetime), CObject2D(nPriority)
 {
 	// 値のクリア
 	m_state = STATE::STATE_NONE;		// 状態
@@ -44,10 +44,10 @@ CTitle_PressEnter::CTitle_PressEnter(float fadetime, int nPriority) : m_fFadeOut
 //==========================================================================
 // 生成処理
 //==========================================================================
-CTitle_PressEnter* CTitle_PressEnter::Create(float fadetime)
+CGame_PressEnter* CGame_PressEnter::Create(float fadetime)
 {
 	// メモリの確保
-	CTitle_PressEnter* pScreen = DEBUG_NEW CTitle_PressEnter(fadetime);
+	CGame_PressEnter* pScreen = DEBUG_NEW CGame_PressEnter(fadetime);
 
 	if (pScreen != nullptr)
 	{
@@ -61,7 +61,7 @@ CTitle_PressEnter* CTitle_PressEnter::Create(float fadetime)
 //==========================================================================
 // 初期化処理
 //==========================================================================
-HRESULT CTitle_PressEnter::Init()
+HRESULT CGame_PressEnter::Init()
 {
 	// 初期化処理
 	HRESULT hr = CObject2D::Init();
@@ -99,7 +99,7 @@ HRESULT CTitle_PressEnter::Init()
 //==========================================================================
 // 更新処理
 //==========================================================================
-void CTitle_PressEnter::Update()
+void CGame_PressEnter::Update()
 {
 	if (CManager::GetInstance()->GetFade()->GetState() != CFade::STATE_NONE)
 	{// フェード中は抜ける
@@ -120,7 +120,7 @@ void CTitle_PressEnter::Update()
 //==========================================================================
 // なにもなし
 //==========================================================================
-void CTitle_PressEnter::StateNone()
+void CGame_PressEnter::StateNone()
 {
 	// 入力情報取得
 	CInputKeyboard* pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
@@ -136,14 +136,14 @@ void CTitle_PressEnter::StateNone()
 		pInputKeyboard->GetTrigger(DIK_BACKSPACE)
 		)
 	{
-		CManager::GetInstance()->GetFade()->SetFade(CScene::MODE::MODE_GAME);
+		CManager::GetInstance()->GetFade()->SetFade(CScene::MODE::MODE_RANKING);
 	}
 }
 
 //==========================================================================
 // フェードイン
 //==========================================================================
-void CTitle_PressEnter::StateFadeIn()
+void CGame_PressEnter::StateFadeIn()
 {
 	// 状態遷移カウンター減算
 	m_fStateTime -= CManager::GetInstance()->GetDeltaTime();
@@ -166,7 +166,7 @@ void CTitle_PressEnter::StateFadeIn()
 //==========================================================================
 // チュートリアル確認のフェードアウト
 //==========================================================================
-void CTitle_PressEnter::StateTutorial_FadeOut()
+void CGame_PressEnter::StateTutorial_FadeOut()
 {
 	// 状態遷移カウンター加算
 	m_fStateTime += CManager::GetInstance()->GetDeltaTime();
@@ -183,7 +183,7 @@ void CTitle_PressEnter::StateTutorial_FadeOut()
 //==========================================================================
 // 状態設定
 //==========================================================================
-void CTitle_PressEnter::SetState(STATE state)
+void CGame_PressEnter::SetState(STATE state)
 {
 	m_state = state;
 	m_fStateTime = 0.0f;
