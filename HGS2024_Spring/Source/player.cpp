@@ -61,7 +61,7 @@ namespace
 	const float TIME_START_VELOCITY = 0.2f;	// 最高速になるまでの時間
 
 	// ステータス
-	const float DEFAULT_RESPAWNHEAL = 0.45f;				// リスポーン時の回復割合
+	const float DEFAULT_RESPAWNHEAL = 0.45f;			// リスポーン時の回復割合
 	const float DEFAULT_SUBVALUE_GUARD = 30.0f;			// ガードのスタミナ減算量
 	const float DEFAULT_SUBVALUE_COUNTER = 5.0f;		// カウンターのスタミナ減算量
 	const float DEFAULT_COUNTERHEAL = 0.0f;				// カウンターのスタミナ回復量
@@ -214,7 +214,7 @@ HRESULT CPlayer::Init()
 
 	// かご生成
 	m_pBusket = CBusket::Create(10000);
-	CFlowerBud::Create(MyLib::Vector3(0.0f, 0.0f, 0.0f), 10000, 2000);
+	CFlowerBud::Create(MyLib::Vector3(0.0f, 0.0f, 0.0f), 10000, 10000);
 
 
 	m_fWalkTime = TIME_START_VELOCITY;

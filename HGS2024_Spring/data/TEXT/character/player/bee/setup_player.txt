@@ -14,7 +14,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 5
+NUM_MODEL = 6
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -24,6 +24,7 @@ MODEL_FILENAME = data/MODEL/bee/head.x		# [1]体
 MODEL_FILENAME = data/MODEL/bee/tail.x		# [2]頭
 MODEL_FILENAME = data/MODEL/bee/Lwing.x		# [3]髪
 MODEL_FILENAME = data/MODEL/bee/Rwing.x		# [4]右上腕
+MODEL_FILENAME = data/MODEL/bee/busket.x		# [4]右上腕
 
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -71,6 +72,14 @@ CHARACTERSET
 		INDEX = 4
 		PARENT = 0
 		POS = -16.80 23.10 -1.50
+		ROT = 0.00 0.00 0.00
+		START = 1
+	END_PARTSSET
+	
+	PARTSSET
+		INDEX = 5
+		PARENT = 0
+		POS = 0.00 -93.50 22.00
 		ROT = 0.00 0.00 0.00
 		START = 1
 	END_PARTSSET
