@@ -13,6 +13,7 @@ SCRIPT			# この行は絶対消さないこと！
 1MOTION_FILENAME = data/TEXT/character/enemy/gobelin/setup_gobelin.txt
 1MOTION_FILENAME = data/TEXT/character/enemy/stonegolem/setup_stonegolem.txt
 1MOTION_FILENAME = data/TEXT/character/enemy/gorira/setup_gorira.txt
-MOTION_FILENAME = data/TEXT/character/player/tyuuni/setup_player.txt
+1MOTION_FILENAME = data/TEXT/character/player/tyuuni/setup_player.txt
+MOTION_FILENAME = data/TEXT/character/player/bee/setup_player.txt
 
 END_SCRIPT		# この行は絶対消さないこと！

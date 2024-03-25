@@ -39,7 +39,7 @@
 //==========================================================================
 namespace
 {
-	const char* CHARAFILE = "data\\TEXT\\character\\player\\tyuuni\\setup_player.txt";	// キャラクターファイル
+	const char* CHARAFILE = "data\\TEXT\\character\\player\\bee\\setup_player.txt";	// キャラクターファイル
 	const float JUMP = 20.0f * 1.5f;			// ジャンプ力初期値
 	const float TIME_DMG = static_cast<float>(20) / static_cast<float>(mylib_const::DEFAULT_FPS);	// ダメージ時間
 	const int INVINCIBLE_INT = 2;				// 無敵の間隔
@@ -53,6 +53,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
 	const float VELOCITY_SIDESTEP = 10.0f;
+	const float GOAL_Z = 10000.0f;
 
 	// ステータス
 	const float DEFAULT_RESPAWNHEAL = 0.45f;				// リスポーン時の回復割合
@@ -516,23 +517,6 @@ void CPlayer::Controll()
 		nMotionType = pMotion->GetType();
 		fRotDest = GetRotDest();
 
-		// ダッシュ判定
-		if (pInputGamepad->GetPress(CInputGamepad::BUTTON_LB, m_nMyPlayerIdx) &&
-			pInputGamepad->IsTipStick())
-		{// 左スティックが倒れてる場合
-			m_bDash = true;
-		}
-		else
-		{
-			m_bDash = false;
-		}
-
-		if (m_bDash)
-		{
-			// ダッシュ倍率掛ける
-			fMove *= MULTIPLIY_DASH;
-		}
-
 		if ((pMotion->IsGetMove(nMotionType) == 1 || pMotion->IsGetCancelable()) &&
 			!m_pControlAtk->IsReserve() &&
 			m_state != STATE_KNOCKBACK &&
@@ -554,6 +538,21 @@ void CPlayer::Controll()
 
 			move.z += cosf(D3DX_PI * 0.0f + Camerarot.y) * fMove;
 
+			m_sMotionFrag.bMove = true;
+
+
+			if (m_bJump == false &&
+				pInputGamepad->GetPress(CInputGamepad::BUTTON_A, m_nMyPlayerIdx))
+			{// ブースト
+
+				m_bDash = true;
+			}
+			else
+			{
+				m_bDash = false;
+			}
+
+
 			if (m_sMotionFrag.bMove &&
 				!m_bJump)
 			{// キャンセル可能 && 移動中
@@ -569,21 +568,6 @@ void CPlayer::Controll()
 				{
 					pMotion->Set(MOTION_WALK);
 				}
-			}
-
-			if (m_bJump == false &&
-				pInputGamepad->GetTrigger(CInputGamepad::BUTTON_A, m_nMyPlayerIdx) &&
-				!m_bTouchBeacon)
-			{// ブースト
-
-				m_bJump = true;
-				m_sMotionFrag.bJump = true;
-				move.y += 17.0f;
-
-				pMotion->Set(MOTION_JUMP);
-
-				// サウンド再生
-				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_JUMP);
 			}
 		}
 
@@ -732,18 +716,18 @@ void CPlayer::Controll()
 		}
 	}
 
-	//if (m_pWeaponHandle != nullptr)
-	{
-		// 武器の位置
-		MyLib::Vector3 weponpos = UtilFunc::Transformation::WorldMtxChangeToPosition(GetModel()[16]->GetWorldMtx());
+	////if (m_pWeaponHandle != nullptr)
+	//{
+	//	// 武器の位置
+	//	MyLib::Vector3 weponpos = UtilFunc::Transformation::WorldMtxChangeToPosition(GetModel()[16]->GetWorldMtx());
 
-		// 武器のマトリックス取得
-		D3DXMATRIX weaponWorldMatrix = GetModel()[16]->GetWorldMtx();
+	//	// 武器のマトリックス取得
+	//	D3DXMATRIX weaponWorldMatrix = GetModel()[16]->GetWorldMtx();
 
-		// 軌跡のマトリックス設定
-		CMyEffekseer::GetInstance()->SetMatrix(m_WeaponHandle, weaponWorldMatrix);
-		CMyEffekseer::GetInstance()->SetPosition(m_WeaponHandle, weponpos);
-	}
+	//	// 軌跡のマトリックス設定
+	//	CMyEffekseer::GetInstance()->SetMatrix(m_WeaponHandle, weaponWorldMatrix);
+	//	CMyEffekseer::GetInstance()->SetPosition(m_WeaponHandle, weponpos);
+	//}
 
 	// デバッグ用
 #if _DEBUG
@@ -1449,6 +1433,15 @@ void CPlayer::LimitPos()
 	move.y = 0.0f;
 	SetPosition(pos);
 	SetMove(move);
+
+	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN &&
+		pos.z >= GOAL_Z)
+	{
+		// 通常クリア状態にする
+		CGame::GetInstance()->GetGameManager()->SetType(CGameManager::SceneType::SCENE_MAINRESULT);
+		CGame::GetInstance()->GetGameManager()->GameResultSettings();
+	}
+
 	return;
 
 	// エリア制限情報取得
