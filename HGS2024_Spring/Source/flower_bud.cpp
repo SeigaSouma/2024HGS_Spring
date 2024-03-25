@@ -132,6 +132,7 @@ void CFlowerBud::StateCharge()
 	m_fStateTime += CManager::GetInstance()->GetDeltaTime();
 
 	my_particle::Create(GetPosition(), my_particle::TYPE::TYPE_FLOWERINGCHARGE);
+	CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_CHARGE);
 
 	if (m_fStateTime >= TIME_CHARGE)
 	{
@@ -158,6 +159,8 @@ void CFlowerBud::StateFlowering()
 
 		CDecideFlower::Create(GetPosition(), move);
 	}
+	
+	CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_BLOOM);
 
 	if (static_cast<int>(m_fStateTime) >= TIME_FLOWERING)
 	{
