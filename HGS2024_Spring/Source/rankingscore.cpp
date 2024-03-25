@@ -309,8 +309,7 @@ void CRankingScore::SetAllArrival()
 
 	for (int nCntRanking = 0; nCntRanking < RANKINGNUM; nCntRanking++)
 	{
-		for (int nCntScore = 0; nCntScore < RANKINGSCORE_DIGIT; nCntScore++)
-		{
+		
 			// 位置取得
 			MyLib::Vector3 pos = m_pScore[nCntRanking]->GetPosition();
 
@@ -324,7 +323,7 @@ void CRankingScore::SetAllArrival()
 			D3DXCOLOR col = m_pScore[nCntRanking]->GetColor();
 
 			// 移動
-			float fDest = m_fPosDestX[nCntRanking] + nCntScore * BASE_DIS_X;
+			float fDest = m_fPosDestX[nCntRanking];
 			pos.x = fDest;
 
 			// 不透明度設定
@@ -335,7 +334,6 @@ void CRankingScore::SetAllArrival()
 
 			// 色設定
 			m_pScore[nCntRanking]->SetColor(col);
-		}
 	}
 
 }
