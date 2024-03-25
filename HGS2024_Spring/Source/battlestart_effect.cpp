@@ -16,7 +16,7 @@
 //==========================================================================
 namespace
 {
-	const char* TEXTURE = "data\\TEXTURE\\battlestart\\battlestart_effect.png";	// テクスチャのファイル
+	const char* TEXTURE = "data\\TEXTURE\\battlestart\\don3.png";	// テクスチャのファイル
 	const float LIFE = 0.7f;	// 集まる時間
 }
 

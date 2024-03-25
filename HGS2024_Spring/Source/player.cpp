@@ -57,7 +57,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// ‰ñ”ð‚ÌŒ¸ŽZ—Ê
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 10000.0f;
+	const float GOAL_Z = 60000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŽžŠÔ
 	const float TIME_START_VELOCITY = 0.2f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŽžŠÔ
 	const float TIME_FLOWERING = 2.0f;		// ŠJ‰Ô‚Ü‚Å‚ÌŽžŠÔ
@@ -1261,6 +1261,7 @@ void CPlayer::LimitPos()
 		CGame::GetInstance()->GetGameManager()->GameResultSettings();
 		CFlowerBud::GetInstance()->SetCurrentPollen(10000, m_pBusket->GetPollen());
 		CManager::GetInstance()->GetRankingManager()->SetNowScore(CFlowerBud::GetInstance()->GetSpawnNum());
+		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_GOAL);
 	}
 
 	return;
