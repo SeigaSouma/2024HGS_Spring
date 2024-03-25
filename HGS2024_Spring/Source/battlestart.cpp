@@ -171,7 +171,7 @@ void CBattleStart::StateExpansion()
 	{
 		m_fStateTime = 0.0f;
 		m_state = STATE_WAIT;
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_BATTLESTART_CHARGE);
+		//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_BATTLESTART_CHARGE);
 		return;
 	}
 
@@ -206,7 +206,7 @@ void CBattleStart::StateDrop()
 	{
 		m_fStateTime = 0.0f;
 		m_state = STATE_FADEOUT;
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_BATTLESTART_CHARGE);
+		//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_BATTLESTART_CHARGE);
 
 		SetSize(GetSizeOrigin());
 

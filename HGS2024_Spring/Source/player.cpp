@@ -1523,7 +1523,7 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 			DeadSetting(&hitresult);
 
 			// ダメージ音
-			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_STRONG);
+			//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_STRONG);
 			return hitresult;
 		}
 
@@ -1574,7 +1574,7 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 				GetMotion()->Set(MOTION_DMG);
 
 				// ダメージ音
-				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_NORMAL);
+				//CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_NORMAL);
 			}
 		}
 
