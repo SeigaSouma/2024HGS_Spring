@@ -426,7 +426,7 @@ void CPlayer::Update()
 	UpdateState();
 
 	//â‘ï≤ÇÌÇ”ÇÌÇ”èàóù
-	my_particle::Create(GetPosition() + MyLib::Vector3(0.0f,100.0f,0.0f), my_particle::TYPE_POLLENDROP);
+	my_particle::Create(GetPosition() + MyLib::Vector3(0.0f,70.0f,0.0f), my_particle::TYPE_POLLENDROP);
 
 	// à íuéÊìæ
 	MyLib::Vector3 pos = GetPosition();
