@@ -855,6 +855,9 @@ HRESULT MyMap::ReadText(const char *pTextFile)
 				return E_FAIL;
 			}
 
+			// ƒŠƒXƒg‚É’Ç‰Á
+			mapdate::pObjX[mapdate::nNumObjXAll]->RegistList(mapdate::pObjX[mapdate::nNumObjXAll]);
+
 			// Ží—ÞÝ’è
 			mapdate::pObjX[mapdate::nNumObjXAll]->SetType(CObject::TYPE_XFILE);
 			mapdate::nNumObjXAll++;

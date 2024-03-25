@@ -46,10 +46,9 @@ private:
 
 	enum STATE
 	{
-		STATE_GETTOGETHER = 0,	// 集まる
-		STATE_CHARGE,	// 溜め
-		STATE_STINGS,	// 刺さり
-		STATE_SCALE,	// 拡大
+		STATE_EXPANTION = 0,
+		STATE_WAIT,
+		STATE_DROP,
 		STATE_FADEOUT,
 		STATE_MAX
 	};
@@ -75,10 +74,9 @@ private:
 	// メンバ関数
 	//=============================
 	// 状態関数
-	void StateGetTogether();	// 集まる
-	void StateCharge();			// 溜め
-	void StateStings();	// 刺さる
-	void StateScale();	// 拡縮
+	void StateExpansion();	//拡大
+	void StateWait();		//待ち
+	void StateDrop();		//落とす
 	void StateFadeOut();	// フェードアウト
 
 	//=============================

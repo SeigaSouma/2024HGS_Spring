@@ -8,14 +8,16 @@
 #include "manager.h"
 #include "camera.h"
 #include "pollen_gauge.h"
+#include "game.h"
+#include "gamemanager.h"
 
 //==========================================================================
 // ’è”’è‹`
 //==========================================================================
 namespace
 {
-	int LOST_VALUE = 25;
-	int BOOST_VALUE = 25;
+	int LOST_VALUE = 250;
+	int BOOST_VALUE = 200;
 }
 
 //==========================================================================
@@ -91,6 +93,12 @@ void CBusket::Uninit()
 //==========================================================================
 void CBusket::Update()
 {
+
+	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN)
+	{
+		m_nPollen--;
+	}
+
 	m_pPollenGauge->SetValue(m_nPollen);
 	m_pPollenGauge->Update();
 }
