@@ -151,8 +151,7 @@ HRESULT CRankingScore::Init()
 	// ランキング読み込み
 	Load();
 
-	if (CManager::GetInstance()->GetOldMode() == CScene::MODE_RESULT)
-	{
+	
 		// 今回のスコア取得
 		m_nNowScore = CManager::GetInstance()->GetRankingManager()->GetNowScore();
 
@@ -161,7 +160,7 @@ HRESULT CRankingScore::Init()
 
 		// セーブ処理
 		Save();
-	}
+	
 
 	return S_OK;
 }
@@ -274,27 +273,27 @@ void CRankingScore::Moving(int nCntRanking)
 //==========================================================================
 void CRankingScore::UpdateNewRecord()
 {
-	
-		// 位置取得
-		MyLib::Vector3 pos = m_pScore[m_nIdxNewRecord]->GetPosition();
 
-		// サイズ取得
-		D3DXVECTOR2 size = m_pScore[m_nIdxNewRecord]->GetSize();
+	// 位置取得
+	MyLib::Vector3 pos = m_pScore[m_nIdxNewRecord]->GetPosition();
 
-		// 色取得
-		D3DXCOLOR col = m_pScore[m_nIdxNewRecord]->GetColor();
+	// サイズ取得
+	D3DXVECTOR2 size = m_pScore[m_nIdxNewRecord]->GetSize();
 
-		// 曲線補正
-		UtilFunc::Correction::CuadricCurveComp(col.a, 180, 0.3f, 1.0f, m_nCntNewRecord);
+	// 色取得
+	D3DXCOLOR col = m_pScore[m_nIdxNewRecord]->GetColor();
 
-		// 位置設定
-		m_pScore[m_nIdxNewRecord]->SetPosition(pos);
+	// 曲線補正
+	UtilFunc::Correction::CuadricCurveComp(col.a, 60, 0.3f, 1.0f, m_nCntNewRecord);
 
-		// サイズ設定
-		m_pScore[m_nIdxNewRecord]->SetSize(size);
+	// 位置設定
+	m_pScore[m_nIdxNewRecord]->SetPosition(pos);
 
-		// 色設定
-		m_pScore[m_nIdxNewRecord]->SetColor(col);
+	// サイズ設定
+	m_pScore[m_nIdxNewRecord]->SetSize(size);
+
+	// 色設定
+	m_pScore[m_nIdxNewRecord]->SetColor(col);
 }
 
 //==========================================================================
@@ -455,7 +454,7 @@ void CRankingScore::Load()
 		m_nNumRanking = RANKINGNUM;
 		for (int nCount = 0; nCount < m_nNumRanking; nCount++)
 		{// 全部ゼロ
-			m_nScore[nCount] = 10000;
+			m_nScore[nCount] = 500;
 			//m_nScore[nCount] = 150000 - nCount * 25000;
 		}
 

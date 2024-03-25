@@ -54,6 +54,7 @@
     <ClCompile Include="Source\fog.cpp" />
     <ClCompile Include="Source\game.cpp" />
     <ClCompile Include="Source\gamemanager.cpp" />
+    <ClCompile Include="Source\game_pressenter.cpp" />
     <ClCompile Include="Source\game_tutorial.cpp" />
     <ClCompile Include="Source\hp_gauge.cpp" />
     <ClCompile Include="Source\hp_gauge_tip.cpp" />
@@ -109,6 +110,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\ranking.cpp" />
+    <ClCompile Include="Source\rankingbg.cpp" />
     <ClCompile Include="Source\rankingmanager.cpp" />
     <ClCompile Include="Source\rankingscore.cpp" />
     <ClCompile Include="Source\renderer.cpp" />
@@ -170,6 +172,7 @@
     <ClInclude Include="Source\fog.h" />
     <ClInclude Include="Source\game.h" />
     <ClInclude Include="Source\gamemanager.h" />
+    <ClInclude Include="Source\game_pressenter.h" />
     <ClInclude Include="Source\game_tutorial.h" />
     <ClInclude Include="Source\hp_gauge.h" />
     <ClInclude Include="Source\hp_gauge_tip.h" />
@@ -223,6 +226,7 @@
     <ClInclude Include="Source\pollen_gauge.h" />
     <ClInclude Include="Source\precompile.h" />
     <ClInclude Include="Source\ranking.h" />
+    <ClInclude Include="Source\rankingbg.h" />
     <ClInclude Include="Source\rankingmanager.h" />
     <ClInclude Include="Source\rankingscore.h" />
     <ClInclude Include="Source\renderer.h" />

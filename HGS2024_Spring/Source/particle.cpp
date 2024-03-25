@@ -762,7 +762,7 @@ void Pollen_Lost()
 
 	for (int nCntUse = 0; nCntUse < 10; nCntUse++)
 	{
-		m_fMove = (float)(UtilFunc::Transformation::Random(0, 10)) / 10 + 2.0f;		// ˆÚ“®—Ê
+		m_fMove = (float)(UtilFunc::Transformation::Random(80, 100)) / 10 + 2.0f;		// ˆÚ“®—Ê
 		m_fAngle = (float)(UtilFunc::Transformation::Random(-314, 314)) / 100.0f;	// Šp“x
 
 		// ˆÚ“®—Ê‚ÌÝ’è

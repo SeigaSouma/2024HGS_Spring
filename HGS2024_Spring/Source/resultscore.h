@@ -19,7 +19,7 @@ class CResultScore : public CObject
 {
 public:
 
-	CResultScore(int nPriority = 8);
+	CResultScore(int nPriority = 11);
 	~CResultScore();
 
 	// オーバーライドされた関数
@@ -42,6 +42,8 @@ private:
 	// メンバ変数
 	//=============================
 	int m_nScore;
+	float m_fStateTime;
+	CObject2D* m_pObj2D;
 	CMultiNumber* m_pScore;			// 生成数スコア
 
 };

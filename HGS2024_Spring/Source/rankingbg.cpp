@@ -1,23 +1,23 @@
 //=============================================================================
 // 
-//  かご処理 [busket.cpp]
+//  ランキング背景処理 [rankingbg.cpp]
 //  Author : 石原颯馬
 // 
 //=============================================================================
-#include "busket.h"
+#include "rankingbg.h"
 #include "manager.h"
 #include "camera.h"
 #include "pollen_gauge.h"
 #include "game.h"
 #include "gamemanager.h"
+#include "calculation.h"
 
 //==========================================================================
 // 定数定義
 //==========================================================================
 namespace
 {
-	int LOST_VALUE = 250;
-	int BOOST_VALUE = 200;
+	const char* TEXTURE = "data\\TEXTURE\\ranking_bg.png";
 }
 
 //==========================================================================
@@ -28,16 +28,18 @@ namespace
 //==========================================================================
 // コンストラクタ
 //==========================================================================
-CBusket::CBusket(int nMaxPollen, int nPriority) : CObject(nPriority), m_nMaxPollen(nMaxPollen)
+CRankingBG::CRankingBG(int nPriority) : CObject2D(nPriority)
 {
-	m_nPollen = 0;
-	m_bEmpty = false;
+	//初期化
+	m_fMoveOffset = 0.0f;
+	m_fSpeed = 0.0f;
+	m_moveDir = MOVE_LEFT;
 }
 
 //==========================================================================
 // デストラクタ
 //==========================================================================
-CBusket::~CBusket()
+CRankingBG::~CRankingBG()
 {
 
 }
@@ -45,16 +47,19 @@ CBusket::~CBusket()
 //==========================================================================
 // 生成処理
 //==========================================================================
-CBusket* CBusket::Create(int nMaxPollen)
+CRankingBG* CRankingBG::Create(float fSpeed)
 {
 	// 生成用のオブジェクト
-	CBusket* pBusket = nullptr;
+	CRankingBG* pBusket = nullptr;
 
 	// メモリの確保
-	pBusket = DEBUG_NEW CBusket(nMaxPollen);
+	pBusket = DEBUG_NEW CRankingBG;
 
 	if (pBusket != nullptr)
 	{// メモリの確保が出来ていたら
+
+		//初期値
+		pBusket->m_fSpeed = fSpeed;
 
 		// 初期化処理
 		pBusket->Init();
@@ -69,78 +74,69 @@ CBusket* CBusket::Create(int nMaxPollen)
 //==========================================================================
 // 初期化処理
 //==========================================================================
-HRESULT CBusket::Init()
+HRESULT CRankingBG::Init()
 {
-	// 花粉量初期値入れる
-	m_nPollen = m_nMaxPollen;
-
-	m_pPollenGauge = CPollen_Gauge::Create(MyLib::Vector3(640.0f, 600.0f, 0.0f), m_nMaxPollen);
-
+	CObject2D::Init();
+	BindTexture(CTexture::GetInstance()->Regist(TEXTURE));
+	m_moveDir = MOVE_RIGHT;
+	SetSize(D3DXVECTOR2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	return S_OK;
 }
 
 //==========================================================================
 // 終了処理
 //==========================================================================
-void CBusket::Uninit()
+void CRankingBG::Uninit()
 {
-	// 情報削除
-	Release();
+	CObject2D::Uninit();
 }
 
 //==========================================================================
 // 更新処理
 //==========================================================================
-void CBusket::Update()
+void CRankingBG::Update()
 {
-
-	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN)
+	//移動
+	float fMove = 0.0f;
+	switch (m_moveDir)
 	{
-		m_nPollen--;
+	case CRankingBG::MOVE_LEFT:
+		m_fMoveOffset -= m_fSpeed;
+		if (m_fMoveOffset <= 0.0f)
+		{
+			m_moveDir = MOVE_RIGHT;
+		}
+		fMove = UtilFunc::Correction::EasingEaseIn(0.0f, 0.25f, m_fMoveOffset);
+		break;
+	case CRankingBG::MOVE_RIGHT:
+		m_fMoveOffset += m_fSpeed;
+		if (m_fMoveOffset >= 1.0f)
+		{
+			m_moveDir = MOVE_LEFT;
+		}
+		fMove = UtilFunc::Correction::EasingEaseIn(0.0f, 0.25f, m_fMoveOffset);
+		break;
+	case CRankingBG::MOVE_MAX:
+		break;
+	default:
+		break;
 	}
 
-	m_pPollenGauge->SetValue(m_nPollen);
-	//m_pPollenGauge->Update();
+	//テクスチャ設定
+	D3DXVECTOR2 aTex[4];
+	aTex[0] = D3DXVECTOR2(fMove, 0.25f);
+	aTex[1] = D3DXVECTOR2(0.75f + fMove, 0.25f);
+	aTex[2] = D3DXVECTOR2(fMove, 1.0f);
+	aTex[3] = D3DXVECTOR2(0.75f + fMove, 1.0f);
+	SetTex(&aTex[0]);
+
+	CObject2D::Update();
 }
 
 //==========================================================================
 // 描画処理
 //==========================================================================
-void CBusket::Draw()
+void CRankingBG::Draw()
 {
-	
-	//m_pPollenGauge->Draw();
-}
-
-void CBusket::SetDisp(bool disp)
-{
-	m_pPollenGauge->SetEnableDisp(disp);
-}
-
-//==========================================================================
-// ぶつかって減らす処理
-//==========================================================================
-void CBusket::Lost(void)
-{
-	m_nPollen -= LOST_VALUE;
-
-	if (m_nPollen <= 0)
-	{
-		m_nPollen = 0;
-		m_bEmpty = true;
-	}
-}
-
-//==========================================================================
-// 粉塵爆発ブースト処理
-//==========================================================================
-void CBusket::Boost(void)
-{
-	m_nPollen -= BOOST_VALUE;
-
-	if (m_nPollen <= 0)
-	{
-		m_nPollen = 0;
-		m_bEmpty = true;
-	}
+	CObject2D::Draw();
 }

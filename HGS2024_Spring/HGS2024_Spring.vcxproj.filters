@@ -372,6 +372,12 @@
     <ClCompile Include="Source\resultscore.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Source\game_pressenter.cpp">
+      <Filter>mode\game</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\rankingbg.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Xload.h">
@@ -708,6 +714,12 @@
       <Filter>flower</Filter>
     </ClInclude>
     <ClInclude Include="Source\resultscore.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\game_pressenter.h">
+      <Filter>mode\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rankingbg.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

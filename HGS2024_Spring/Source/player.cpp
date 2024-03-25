@@ -33,6 +33,7 @@
 #include "busket.h"
 #include "map.h"
 #include "flower_bud.h"
+#include "rankingmanager.h"
 
 // 使用クラス
 #include "playercontrol.h"
@@ -425,8 +426,11 @@ void CPlayer::Update()
 	// 状態更新
 	UpdateState();
 
-	//花粉わふわふ処理
-	my_particle::Create(GetPosition() + MyLib::Vector3(0.0f,70.0f,0.0f), my_particle::TYPE_POLLENDROP);
+	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN)
+	{
+		//花粉わふわふ処理
+		my_particle::Create(GetPosition() + MyLib::Vector3(0.0f, 70.0f, 0.0f), my_particle::TYPE_POLLENDROP);
+	}
 
 	// 位置取得
 	MyLib::Vector3 pos = GetPosition();
@@ -563,6 +567,11 @@ void CPlayer::Controll()
 			if (m_bDash)
 			{
 				fMove *= MULTIPLIY_DASH;
+
+				CMyEffekseer::GetInstance()->SetEffect(
+					CMyEffekseer::EFKLABEL::EFKLABEL_BOOST,
+					GetCenterPosition(),
+					GetRotation(), 0.0f, 60.0f);
 			}
 
 			move.z += cosf(D3DX_PI * 0.0f) * (fMove * ratio);
@@ -1209,7 +1218,8 @@ void CPlayer::LimitPos()
 	SetPosition(pos);
 	SetMove(move);
 
-	if (m_state != STATE_FLOWERING &&
+	if (CGame::GetInstance()->GetGameManager()->IsControll() &&
+		m_state != STATE_FLOWERING &&
 		m_state != STATE_AFTERFLOWERING)
 	{
 		// エリア制限情報取得
@@ -1240,6 +1250,8 @@ void CPlayer::LimitPos()
 		// 通常クリア状態にする
 		CGame::GetInstance()->GetGameManager()->SetType(CGameManager::SceneType::SCENE_MAINRESULT);
 		CGame::GetInstance()->GetGameManager()->GameResultSettings();
+		CFlowerBud::GetInstance()->SetCurrentPollen(10000, m_pBusket->GetPollen());
+		CManager::GetInstance()->GetRankingManager()->SetNowScore(CFlowerBud::GetInstance()->GetSpawnNum());
 	}
 
 	return;
@@ -2115,6 +2127,7 @@ void CPlayer::StateFlowering()
 		m_fWalkTime = 0.0f;
 		m_posKnokBack = GetPosition();
 		//SetOriginPosition(GetPosition());
+		m_pBusket->SetDisp(false);
 	}
 
 	m_fWalkTime += CManager::GetInstance()->GetDeltaTime();
@@ -2136,6 +2149,8 @@ void CPlayer::StateFlowering()
 	{
 		m_state = STATE_AFTERFLOWERING;
 	}
+
+	//CManager::GetInstance()->GetCamera()->SetLenDest(4000.0f, 2, 1.0f, 0.015f);
 }
 
 //==========================================================================
@@ -2146,6 +2161,12 @@ void CPlayer::StateAfterFlowering()
 	MyLib::Vector3 pos = GetPosition();
 	pos.y += (100.0f - pos.y) * 0.1f;
 	SetPosition(pos);
+	CManager::GetInstance()->GetCamera()->SetLenDest(4000.0f, 2, 1.0f, 0.03f);
+
+
+	MyLib::Vector3 cameraRot = CManager::GetInstance()->GetCamera()->GetRotation();
+	cameraRot.z += (-0.84f - cameraRot.z) * 0.03f;
+	CManager::GetInstance()->GetCamera()->SetRotation(cameraRot);
 
 }
 

@@ -39,6 +39,8 @@ public:
 	virtual void Update() override;
 
 	void SetSatate(STATE state) { m_state = state; }
+	void SetCurrentPollen(int maxPollen, int pollen);
+	int GetSpawnNum() { return m_nSpawnNum; }
 
 	static CFlowerBud* Create(const MyLib::Vector3& pos, int maxPollen, int currentPollen);	// ê∂ê¨
 	static CFlowerBud* GetInstance() { return m_ThisPtr; }

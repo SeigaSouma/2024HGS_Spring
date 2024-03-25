@@ -59,6 +59,7 @@ public:
 		EFKLABEL_CHARGEATK,				// チャージ攻撃
 		EFKLABEL_RESPAWN_START,			// 復活開始
 		EFKLABEL_RESPAWN_WIND,			// 復活インパクト
+		EFKLABEL_BOOST,			// ブースト
 		EFKLABEL_MAX
 	};
 
