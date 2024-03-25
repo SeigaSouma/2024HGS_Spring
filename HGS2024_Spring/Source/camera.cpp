@@ -300,12 +300,14 @@ void CCamera::MoveCameraInput()
 //==========================================================================
 void CCamera::MoveCameraStick(int nIdx)
 {
+#ifdef _DEBUG
 	if (CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAME ||
 		CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAMETUTORIAL)
 	{
 		// ‘€ìˆ—
 		m_pControlState->MoveCamera(this);
 	}
+#endif
 
 	// Šp“x‚Ì³‹K‰»
 	UtilFunc::Transformation::RotNormalize(m_rot);
@@ -319,6 +321,8 @@ void CCamera::MoveCameraStick(int nIdx)
 //==========================================================================
 void CCamera::MoveCameraMouse()
 {
+#ifdef _DEBUG
+
 	if (CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAME ||
 		CManager::GetInstance()->GetMode() == CScene::MODE::MODE_GAMETUTORIAL)
 	{
@@ -396,6 +400,7 @@ void CCamera::MoveCameraMouse()
 		m_fDestDistance += pInputMouse->GetMouseMove().z * (MOVE * 0.3f);
 		m_fOriginDistance += pInputMouse->GetMouseMove().z * (MOVE * 0.3f);
 	}
+#endif
 
 	// Ž‹“_‚Ì‘ã“üˆ—
 	SetCameraV();
@@ -1668,6 +1673,7 @@ void CStateCameraR::SetCameraR(CCamera* pCamera)
 //==========================================================================
 void CStateCameraV::LimitPos(CCamera* pCamera)
 {
+	return;
 	MyLib::Vector3 posVDest = pCamera->GetPositionVDest();
 
 	if (posVDest.LengthXZ() > mylib_const::RADIUS_STAGE)
