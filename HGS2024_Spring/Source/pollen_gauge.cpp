@@ -53,7 +53,7 @@ CPollen_Gauge* CPollen_Gauge::Create(MyLib::Vector3 pos, int nMaxPollen)
 	CPollen_Gauge* pPollenGauge = nullptr;
 
 	// ƒƒ‚ƒŠ‚ÌŠm•Û
-	pPollenGauge = DEBUG_NEW CPollen_Gauge(nMaxPollen);
+	pPollenGauge = DEBUG_NEW CPollen_Gauge;
 
 	if (pPollenGauge != nullptr)
 	{// ƒƒ‚ƒŠ‚ÌŠm•Û‚ªo—ˆ‚Ä‚¢‚½‚ç
@@ -77,7 +77,7 @@ HRESULT CPollen_Gauge::Init()
 {
 	for (int cnt = 0; cnt < VTXTYPE_MAX; cnt++)
 	{
-		m_apGauge[cnt] = CObject2D_Gauge::Create(DEFAULT_WIDTH, DEFAULT_HEIGHT, m_nMaxValue, USE_TEXTURE[cnt]);
+		m_apGauge[cnt] = CObject2D_Gauge::Create(DEFAULT_WIDTH, DEFAULT_HEIGHT, m_nMaxValue, USE_TEXTURE[cnt], GetPriority());
 		
 		if (m_apGauge[cnt] == nullptr)
 		{

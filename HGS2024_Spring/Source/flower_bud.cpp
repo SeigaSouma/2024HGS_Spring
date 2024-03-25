@@ -10,6 +10,7 @@
 #include "particle.h"
 #include "calculation.h"
 #include "flower_decide.h"
+#include "resultscore.h"
 
 //==========================================================================
 // 定数定義
@@ -42,7 +43,6 @@ CFlowerBud::CFlowerBud(int nPriority) : CObjectX(nPriority)
 	m_state = STATE::STATE_WAIT;	// 状態
 	m_fStateTime = 0.0f;			// 状態タイマー
 	m_fRatio = 0.0f;				// 割合
-	m_pScore = nullptr;				// 生成数スコア
 }
 
 //==========================================================================
@@ -161,6 +161,7 @@ void CFlowerBud::StateFlowering()
 
 	if (static_cast<int>(m_fStateTime) >= TIME_FLOWERING)
 	{
+		CResultScore::Create(m_nSpawnNum);
 		Uninit();
 	}
 }
