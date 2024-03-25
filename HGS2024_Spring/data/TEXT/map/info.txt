@@ -73,7 +73,7 @@ MODEL_FILENAME = data\\MODEL\\stage\\titilesword.x		# [37]
 # ãÛèÓïÒ
 #==============================================================================
 SKYSET
-	TEXTYPE = 12
+	TEXTYPE = 11
 	MOVE = 0.000200
 END_SKYSET
 

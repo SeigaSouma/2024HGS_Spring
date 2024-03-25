@@ -31,6 +31,7 @@
 #include "limitarea.h"
 #include "MyEffekseer.h"
 #include "busket.h"
+#include "map.h"
 
 // 使用クラス
 #include "playercontrol.h"
@@ -53,9 +54,10 @@ namespace
 	const float SUBVALUE_DASH = 0.1f;			// ダッシュの減算量
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
-	const float VELOCITY_SIDESTEP = 10.0f;
-	const float GOAL_Z = 20000.0f;
+	const float VELOCITY_SIDESTEP = 12.0f;
+	const float GOAL_Z = 35000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// 最高速になるまでの時間
+	const float TIME_START_VELOCITY = 0.2f;	// 最高速になるまでの時間
 
 	// ステータス
 	const float DEFAULT_RESPAWNHEAL = 0.45f;				// リスポーン時の回復割合
@@ -211,6 +213,9 @@ HRESULT CPlayer::Init()
 
 	// かご生成
 	m_pBusket = CBusket::Create(500);
+
+
+	m_fWalkTime = TIME_START_VELOCITY;
 
 	//// スキルポイント生成
 	//m_pSkillPoint = CSkillPoint::Create();
@@ -670,12 +675,12 @@ void CPlayer::Controll()
 	// 慣性補正
 	if (m_state == STATE_DMG)
 	{
-		move.x += (0.0f - move.x) * 0.1f;
-		move.z += (0.0f - move.z) * 0.1f;
+		move.x += (0.0f - move.x) * 0.015f;
+		move.z += (0.0f - move.z) * 0.015f;
 	}
 	else if (m_state != STATE_KNOCKBACK && m_state != STATE_DEAD && m_state != STATE_FADEOUT)
 	{
-		move.x += (0.0f - move.x) * 0.01f;
+		move.x += (0.0f - move.x) * 0.008f;
 		move.z += (0.0f - move.z) * 0.015f;
 	}
 
@@ -1445,10 +1450,43 @@ void CPlayer::LimitPos()
 {
 	MyLib::Vector3 pos = GetPosition();
 	pos.y = 0.0f;
+
+	if (pos.x >= 1400.0f)
+	{
+		pos.x = 1400.0f;
+	}
+	if (pos.x <= -1400.0f)
+	{
+		pos.x = -1400.0f;
+	}
+
 	MyLib::Vector3 move = GetMove();
 	move.y = 0.0f;
+
 	SetPosition(pos);
 	SetMove(move);
+
+	// エリア制限情報取得
+	CListManager<CObjectX> List = CObjectX::GetListObj();
+	CObjectX* pList = nullptr;
+
+	while (List.ListLoop(&pList))
+	{
+		MyLib::Vector3 OBpos = pList->GetPosition();
+		float len = pList->GetVtxMax().x;
+
+		// コライダーの数繰り返し
+		std::vector<SphereCollider> colliders = GetSphereColliders();
+		for (const auto& collider : colliders)
+		{
+			if (UtilFunc::Collision::CircleRange3D(collider.center, OBpos, collider.radius, len))
+			{
+				ProcessHit(0, OBpos);
+				break;
+			}
+		}
+	}
+
 
 	if (CGame::GetInstance()->GetGameManager()->GetType() == CGameManager::SceneType::SCENE_MAIN &&
 		pos.z >= GOAL_Z)
@@ -1676,107 +1714,6 @@ MyLib::HitResult_Character CPlayer::Hit(const int nValue, CEnemy* pEnemy, CGameM
 
 	MyLib::HitResult_Character hitresult = {};
 
-	CCamera* pCamera = CManager::GetInstance()->GetCamera();
-
-	if (m_bCounterAccepting)
-	{// カウンター受け付け中
-
-		if (atkType == CGameManager::ATTACK_NORMAL)
-		{
-			// 受け流し
-			GetMotion()->Set(MOTION_COUNTER_TURN);
-
-			// 敵に怯み割り当て
-			pEnemy->GetATKState()->ChangeFlinchAction(pEnemy);
-
-			// カウンター
-			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_TURN, true);
-		}
-		else
-		{
-			if (GetMotion()->GetType() != MOTION_COUNTER_ATTACK)
-			{
-
-				// 開始時のフラグコピー
-				m_bLockOnAtStart = pCamera->IsRockOn();
-
-				// 敵のリスト取得
-				CListManager<CEnemy> enemyList = CEnemy::GetListObj();
-				if (enemyList.GetData(m_nIdxRockOn) != nullptr)
-				{
-					// 今までロックオンしてた対象リセット
-					enemyList.GetData(m_nIdxRockOn)->SetEnableRockOn(false);
-				}
-				pEnemy->SetEnableRockOn(true);
-
-				// 反撃位置に設定
-				MyLib::Vector3 setpos = GetPosition();
-				MyLib::Vector3 setrot = GetRotation();
-				setpos.x += sinf(D3DX_PI + setrot.y) * pEnemy->GetRadius();
-				setpos.z += cosf(D3DX_PI + setrot.y) * pEnemy->GetRadius();
-				pEnemy->SetPosition(setpos);
-
-				// インデックス番号設定
-				m_nIdxRockOn = CEnemy::GetListObj().FindIdx(pEnemy);
-
-				// 反撃
-				GetMotion()->Set(MOTION_COUNTER_ATTACK);
-				pCamera->SetRockOnState(CCamera::RockOnState::ROCKON_COUNTER, pEnemy->GetHeight());
-
-				// 敵に怯み割り当て
-				pEnemy->SetState(CEnemy::STATE::STATE_DOWNWAIT);
-
-				// カウンター受け付け
-				CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_COUNTER_ATTACK);
-			}
-		}
-
-		hitresult.ishit = true;
-		return hitresult;
-	}
-
-	if (m_sMotionFrag.bGuard)
-	{// ガード受け付け中
-
-		// 共通のヒット処理
-		if (atkType == CGameManager::ATTACK_STRONG)
-		{// 強攻撃はガー不
-			hitresult = ProcessHit(nValue, pEnemy->GetPosition());
-			return hitresult;
-		}
-
-		if (GetMotion()->GetType() == MOTION_GUARD_DMG)
-		{
-			return hitresult;
-		}
-
-		if (GetMotion()->GetType() == MOTION_GUARD)
-		{
-			GetMotion()->Set(MOTION_GUARD_DMG);
-		}
-
-		// 体力設定
-		int nLife = GetLife();
-		int damage = nValue;
-		nLife -= static_cast<int>(static_cast<float>(nValue) * m_PlayerStatus.damageMitigation);
-		SetLife(nLife);
-
-		if (nLife <= 0)
-		{// 体力がなくなったら
-
-			// 死亡時の設定
-			DeadSetting(&hitresult);
-			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_PLAYERDMG_STRONG);
-			return hitresult;
-		}
-
-		// ヒット時の処理
-		m_pGuard->HitProcess(this, pEnemy->GetPosition());
-		hitresult.ishit = true;
-
-		CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_SE_GUARD_DMG);
-		return hitresult;
-	}
 
 	// 共通のヒット処理
 	hitresult = ProcessHit(nValue, pEnemy->GetPosition());
@@ -1824,6 +1761,8 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 		// 体力減らす
 		nLife -= nValue;
 
+		m_fWalkTime = TIME_START_VELOCITY;
+
 		// ゲームパッド情報取得
 		CInputGamepad* pInputGamepad = CManager::GetInstance()->GetInputGamepad();
 		pInputGamepad->SetVibration(CInputGamepad::VIBRATION_STATE_DMG, 0);
@@ -1862,6 +1801,7 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 		m_posKnokBack = pos;
 		
 		float hitAngle = pos.AngleXZ(hitpos);
+
 		// 衝撃波生成
 		CImpactWave::Create
 		(
@@ -1884,8 +1824,8 @@ MyLib::HitResult_Character CPlayer::ProcessHit(const int nValue, const MyLib::Ve
 			m_sDamageInfo.bReceived = false;
 
 			MyLib::Vector3 move;
-			move.x = sinf(D3DX_PI + hitAngle) * -10.0f;
-			move.z = cosf(D3DX_PI + hitAngle) * -10.0f;
+			move.x = sinf(D3DX_PI + hitAngle) * -60.0f;
+			move.z = cosf(D3DX_PI + hitAngle) * -60.0f;
 			SetMove(move);
 
 			// やられモーション
