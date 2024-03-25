@@ -728,7 +728,7 @@ void Pollen_Drop()
 
 		m_col = D3DXCOLOR(1.0f, 1.0f, 0.3f, 0.6f);
 
-		m_fRadius = 110.0f;
+		m_fRadius = 70.0f;
 
 		if (rand() % 3 == 0)
 		{
