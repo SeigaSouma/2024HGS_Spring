@@ -74,6 +74,7 @@ CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/wings.wav", -1 },				// 羽音
 	{ "data/SE/bloom.wav", 0 },					// 花が咲く
 	{ "data/SE/charge.wav", 0 },				// チャージ
+	{ "data/SE/goal.wav", 0 },					// ゴール
 
 };	// サウンドの情報
 
