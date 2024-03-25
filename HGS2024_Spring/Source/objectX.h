@@ -11,6 +11,7 @@
 #include "main.h"
 #include "object.h"
 #include "Xload.h"
+#include "listmanager.h"
 
 // 前方宣言
 class CShadow;
@@ -56,6 +57,7 @@ public:
 	bool GetUseShadow() const;				// 影を使っているかどうか
 
 	float GetHeight(MyLib::Vector3 pos, bool &bLand);	// 高さ取得
+	void RegistList(CObjectX* ptr);
 
 	void Kill();
 	static CObjectX *Create();
@@ -64,6 +66,9 @@ public:
 	static CObjectX *Create(int nIdxXFile, const MyLib::Vector3& pos, const MyLib::Vector3& rot = 0.0f, bool bShadow = false);
 	CObjectX *GetObjectX();
 	static int GetNumAll();
+
+	static CListManager<CObjectX> GetListObj() { return m_List; }	// リスト取得
+
 protected:
 
 private:
@@ -76,6 +81,7 @@ private:
 	int m_nIdxXFile;		// Xファイルのインデックス番号
 	static int m_nNumAll;	// 総数
 	CShadow *m_pShadow;		// 影の情報
+	static CListManager<CObjectX> m_List;	// 障害物のリスト
 };
 
 
