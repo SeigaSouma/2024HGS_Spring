@@ -66,6 +66,7 @@ private:
 	float m_fStateTime;	// 状態タイマー
 	float m_fRatio;	// 割合
 	int m_nSpawnNum;	// 生成数
+
 	static CFlowerBud* m_ThisPtr;
 };
 

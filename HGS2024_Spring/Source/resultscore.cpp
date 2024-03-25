@@ -15,7 +15,7 @@
 namespace
 {
 	const char* TEXTURE_NUMBER = "data\\TEXTURE\\number\\number_oradano.png";		// 数字のテクスチャ
-	const D3DXVECTOR2 SCORESIZE = D3DXVECTOR2(320.0f, 180.0f);
+	const D3DXVECTOR2 SCORESIZE = D3DXVECTOR2(40.0f, 40.0f);
 }
 
 //==========================================================================
@@ -37,13 +37,15 @@ CResultScore::~CResultScore()
 //==========================================================================
 // 生成処理
 //==========================================================================
-CResultScore* CResultScore::Create()
+CResultScore* CResultScore::Create(int score)
 {
 	// メモリの確保
 	CResultScore* pMarker = DEBUG_NEW CResultScore;
 
 	if (pMarker != nullptr)
 	{
+		pMarker->m_nScore = score;
+
 		// 初期化処理
 		pMarker->Init();
 	}
@@ -93,6 +95,7 @@ void CResultScore::Kill()
 //==========================================================================
 void CResultScore::Update()
 {
+	m_pScore->SetValue(m_nScore);
 	m_pScore->Update();
 }
 
@@ -102,7 +105,6 @@ void CResultScore::Update()
 void CResultScore::CreateScore()
 {
 	// 今回の評価情報取得
-
 	m_pScore = CMultiNumber::Create(
 		MyLib::Vector3(SCREEN_HEIGHT * 0.5f, SCREEN_WIDTH * 0.5f, 0.0f),
 		SCORESIZE,
@@ -116,6 +118,8 @@ void CResultScore::CreateScore()
 
 	// 右寄せに設定
 	m_pScore->SetAlignmentType(CMultiNumber::AlignmentType::ALIGNMENT_RIGHT);
+
+	m_pScore->SetValue(m_nScore);
 
 	// 色設定
 	m_pScore->SetColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

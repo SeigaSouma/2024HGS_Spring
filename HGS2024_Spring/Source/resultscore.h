@@ -29,7 +29,7 @@ public:
 	void Draw() override;
 
 	void Kill();	// 削除
-	static CResultScore* Create();	// 生成処理
+	static CResultScore* Create(int score);	// 生成処理
 
 private:
 
@@ -41,6 +41,7 @@ private:
 	//=============================
 	// メンバ変数
 	//=============================
+	int m_nScore;
 	CMultiNumber* m_pScore;			// 生成数スコア
 
 };

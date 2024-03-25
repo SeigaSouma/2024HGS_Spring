@@ -1189,8 +1189,7 @@ void CPlayer::LimitPos()
 {
 	MyLib::Vector3 pos = GetPosition();
 
-	if (m_state != STATE_FLOWERING &&
-		m_state != STATE_AFTERFLOWERING)
+	if (m_state != STATE_AFTERFLOWERING)
 	{
 		pos.y = 0.0f;
 	}
