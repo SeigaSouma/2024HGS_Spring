@@ -53,7 +53,8 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// 回避の減算量
 
 	const float VELOCITY_SIDESTEP = 10.0f;
-	const float GOAL_Z = 10000.0f;
+	const float GOAL_Z = 20000.0f;
+	const float TIME_MAXVELOCITY = 3.0f;	// 最高速になるまでの時間
 
 	// ステータス
 	const float DEFAULT_RESPAWNHEAL = 0.45f;				// リスポーン時の回復割合
@@ -129,6 +130,7 @@ CPlayer::CPlayer(int nPriority) : CObjectChara(nPriority)
 	m_bDash = false;								// ダッシュ判定
 	m_fDashTime = 0.0f;								// ダッシュ時間
 	m_fChargeTime = 0.0f;							// チャージ時間
+	m_fWalkTime = 0.0f;
 	m_bChargeCompletion = false;					// チャージ完了フラグ
 	m_nRespawnPercent = 0;							// リスポーン確率
 	m_bTouchBeacon = false;							// ビーコンに触れてる判定
@@ -497,6 +499,7 @@ void CPlayer::Controll()
 
 	// 移動量取得
 	float fMove = GetVelocity();
+	float fMoveOrigin = GetVelocity();
 
 	// 経過時間取得
 	float fCurrentTime = CManager::GetInstance()->GetDeltaTime();
@@ -528,15 +531,19 @@ void CPlayer::Controll()
 			if (pInputGamepad->GetTrigger(CInputGamepad::BUTTON::BUTTON_LB, 0))
 			{// 左移動
 
-				move.x -= sinf(D3DX_PI * 0.25f + Camerarot.y) * VELOCITY_SIDESTEP;
+				move.x -= sinf(D3DX_PI * 0.25f) * VELOCITY_SIDESTEP;
 			}
 			else if (pInputGamepad->GetTrigger(CInputGamepad::BUTTON::BUTTON_RB, 0))
 			{// 右移動
 
-				move.x += sinf(D3DX_PI * 0.25f + Camerarot.y) * VELOCITY_SIDESTEP;
+				move.x += sinf(D3DX_PI * 0.25f) * VELOCITY_SIDESTEP;
 			}
 
-			move.z += cosf(D3DX_PI * 0.0f + Camerarot.y) * fMove;
+			m_fWalkTime += CManager::GetInstance()->GetDeltaTime();
+			float ratio = m_fWalkTime / TIME_MAXVELOCITY;
+			UtilFunc::Transformation::ValueNormalize(ratio, 1.0f, 0.0f);
+
+			move.z += cosf(D3DX_PI * 0.0f) * (fMove * ratio);
 
 			m_sMotionFrag.bMove = true;
 
@@ -660,7 +667,7 @@ void CPlayer::Controll()
 	else if (m_state != STATE_KNOCKBACK && m_state != STATE_DEAD && m_state != STATE_FADEOUT)
 	{
 		move.x += (0.0f - move.x) * 0.01f;
-		move.z += (0.0f - move.z) * 0.025f;
+		move.z += (0.0f - move.z) * 0.015f;
 	}
 
 

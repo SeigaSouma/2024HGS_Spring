@@ -17,7 +17,7 @@ TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\walkroad_01.jpg		# [7]
 TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\tile_04.jpg		# [8]
 TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\tile_03.jpg		# [9]
 TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\water_02.jpg		# [10]
-TEXTURE_FILENAME = data\\TEXTURE\\sky\\sky_06.jpg		# [11]
+TEXTURE_FILENAME = data\\TEXTURE\\sky\\sky_02.jpg		# [11]
 TEXTURE_FILENAME = data\\TEXTURE\\FIELD\\hiero.png		# [10]
 
 #------------------------------------------------------------------------------
