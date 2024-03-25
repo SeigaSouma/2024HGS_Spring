@@ -25,6 +25,7 @@
 CBusket::CBusket(int nMaxPollen, int nPriority) : CObject(nPriority), m_nMaxPollen(nMaxPollen)
 {
 	m_nPollen = 0;
+	m_bEmpty = false;
 }
 
 //==========================================================================
@@ -101,6 +102,12 @@ void CBusket::Draw()
 void CBusket::Lost(void)
 {
 	m_nPollen -= LOST_VALUE;
+
+	if (m_nPollen <= 0)
+	{
+		m_nPollen = 0;
+		m_bEmpty = true;
+	}
 }
 
 //==========================================================================
@@ -109,4 +116,10 @@ void CBusket::Lost(void)
 void CBusket::Boost(void)
 {
 	m_nPollen -= BOOST_VALUE;
+
+	if (m_nPollen <= 0)
+	{
+		m_nPollen = 0;
+		m_bEmpty = true;
+	}
 }
