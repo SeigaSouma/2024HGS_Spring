@@ -15,7 +15,7 @@
 namespace
 {
 	const char* TEXTURE_NUMBER = "data\\TEXTURE\\number\\number_oradano.png";		// 数字のテクスチャ
-	const D3DXVECTOR2 SCORESIZE = D3DXVECTOR2(320.0f, 180.0f);
+	const D3DXVECTOR2 SCORESIZE = D3DXVECTOR2(40.0f, 40.0f);
 }
 
 //==========================================================================
