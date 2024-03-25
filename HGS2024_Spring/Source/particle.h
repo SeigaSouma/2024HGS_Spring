@@ -28,6 +28,7 @@ namespace my_particle
 		TYPE_FIRE_STANDTORCH,	// 壁松明の火
 		TYPE_BATTLESTART,		// 戦闘開始
 		TYPE_FLOWERINGCHARGE,		// 開花チャージ
+		TYPE_POLLENDROP,	//花粉落とす
 		TYPE_MAX
 	};
 
