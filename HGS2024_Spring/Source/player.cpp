@@ -57,7 +57,7 @@ namespace
 	const float SUBVALUE_AVOID = 25.0f;			// ‰ñ”ð‚ÌŒ¸ŽZ—Ê
 
 	const float VELOCITY_SIDESTEP = 12.0f;
-	const float GOAL_Z = 0.0f;
+	const float GOAL_Z = 60000.0f;
 	const float TIME_MAXVELOCITY = 3.0f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŽžŠÔ
 	const float TIME_START_VELOCITY = 0.2f;	// Å‚‘¬‚É‚È‚é‚Ü‚Å‚ÌŽžŠÔ
 	const float TIME_FLOWERING = 2.0f;		// ŠJ‰Ô‚Ü‚Å‚ÌŽžŠÔ
@@ -1077,14 +1077,14 @@ void CPlayer::AttackAction(CMotion::AttackInfo ATKInfo, int nCntATK)
 	switch (nType)
 	{
 	case MOTION::MOTION_WALK:
-		if (nCntATK == 0)
+		/*if (nCntATK == 0)
 		{
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_WALK1);
 		}
 		else{
 
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_WALK2);
-		}
+		}*/
 		break;
 
 	case MOTION_FLOWERING:
@@ -1092,14 +1092,14 @@ void CPlayer::AttackAction(CMotion::AttackInfo ATKInfo, int nCntATK)
 		break;
 
 	case MOTION::MOTION_DASH:
-		if (nCntATK == 0)
+		/*if (nCntATK == 0)
 		{
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_DASH1);
 		}
 		else {
 
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_SE_DASH2);
-		}
+		}*/
 		break;
 
 	default:

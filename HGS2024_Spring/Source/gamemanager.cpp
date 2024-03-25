@@ -207,11 +207,6 @@ void CGameManager::GameClearSettings()
 void CGameManager::GameResultSettings()
 {
 
-	CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL::LABEL_BGM_GAME);
-	CManager::GetInstance()->GetSound()->StopSound(CSound::LABEL::LABEL_BGM_BOSS);
-	CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_BGM_GAMECLEAR);
-	CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_BGM_GALLERY);
-
 	// クリアテキスト生成
 	CStageClearText::Create(MyLib::Vector3(640.0f, 360.0f, 0.0f));
 
@@ -232,13 +227,13 @@ void CGameManager::SceneTransition()
 
 		// BGMストップ
 		CManager::GetInstance()->GetSound()->StopSound();
-		if (m_nNowStage != 3)
+		/*if (m_nNowStage != 3)
 		{
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL_BGM_GAME);
 		}
 		else {
 			CManager::GetInstance()->GetSound()->PlaySound(CSound::LABEL::LABEL_BGM_BOSS);
-		}
+		}*/
 
 		// ゲーム開始時のフラグ
 		m_bGameStart = true;
