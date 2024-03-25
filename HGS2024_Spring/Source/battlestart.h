@@ -46,10 +46,9 @@ private:
 
 	enum STATE
 	{
-		STATE_GETTOGETHER = 0,	// èWÇ‹ÇÈ
-		STATE_CHARGE,	// ó≠Çﬂ
-		STATE_STINGS,	// éhÇ≥ÇË
-		STATE_SCALE,	// ägëÂ
+		STATE_EXPANTION = 0,
+		STATE_WAIT,
+		STATE_DROP,
 		STATE_FADEOUT,
 		STATE_MAX
 	};
@@ -79,6 +78,10 @@ private:
 	void StateCharge();			// ó≠Çﬂ
 	void StateStings();	// éhÇ≥ÇÈ
 	void StateScale();	// ägèk
+
+	void StateExpansion();	//ägëÂ
+	void StateWait();		//ë“Çø
+	void StateDrop();		//óéÇ∆Ç∑
 	void StateFadeOut();	// ÉtÉFÅ[ÉhÉAÉEÉg
 
 	//=============================
