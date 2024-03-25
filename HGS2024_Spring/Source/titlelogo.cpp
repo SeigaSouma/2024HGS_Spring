@@ -10,7 +10,6 @@
 #include "manager.h"
 #include "sound.h"
 #include "calculation.h"
-#include "deadmanager.h"
 #include "fade.h"
 
 //==========================================================================
