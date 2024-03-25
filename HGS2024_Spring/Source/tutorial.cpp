@@ -1,10 +1,10 @@
 //=============================================================================
 // 
-//  タイトル処理 [title.cpp]
+//  タイトル処理 [tutorial.cpp]
 //  Author : 相馬靜雅
 // 
 //=============================================================================
-#include "title.h"
+#include "tutorial.h"
 #include "input.h"
 #include "fade.h"
 #include "renderer.h"
@@ -13,8 +13,7 @@
 #include "sound.h"
 #include "particle.h"
 #include "MyEffekseer.h"
-#include "titlelogo.h"
-#include "title_pressenter.h"
+#include "tutoriallogo.h"
 
 //==========================================================================
 // 定数定義
@@ -28,34 +27,21 @@ namespace
 //==========================================================================
 // 静的メンバ変数宣言
 //==========================================================================
-CTitle* CTitle::m_pThisPtr = nullptr;	// 自身のポインタ
-
-//==========================================================================
-// 関数ポインタ
-//==========================================================================
-CTitle::SCENE_FUNC CTitle::m_SceneFunc[] =
-{
-	&CTitle::SceneNone,			// なにもなし
-	&CTitle::SceneFadeInLogo,	// ロゴフェードイン
-	&CTitle::SceneFadeOutLoGo,	// ロゴフェードアウト
-};
+CTutorial* CTutorial::m_pThisPtr = nullptr;	// 自身のポインタ
 
 //==========================================================================
 // コンストラクタ
 //==========================================================================
-CTitle::CTitle()
+CTutorial::CTutorial()
 {
 	// 値のクリア
-	m_SceneType = SCENETYPE::SCENETYPE_NONE;	// シーンの種類
-	m_fSceneTime = 0.0f;						// シーンカウンター
 	m_pLogo = nullptr;		// ロゴのポインタ
-	m_pPressEnter = nullptr;	// プレスエンター
 }
 
 //==========================================================================
 // デストラクタ
 //==========================================================================
-CTitle::~CTitle()
+CTutorial::~CTutorial()
 {
 
 }
@@ -63,13 +49,13 @@ CTitle::~CTitle()
 //==========================================================================
 // 生成処理
 //==========================================================================
-CTitle* CTitle::Create()
+CTutorial* CTutorial::Create()
 {
 	if (m_pThisPtr == nullptr)
 	{// まだ生成していなかったら
 
 		// インスタンス生成
-		m_pThisPtr = DEBUG_NEW CTitle;
+		m_pThisPtr = DEBUG_NEW CTutorial;
 	}
 
 	return m_pThisPtr;
@@ -78,7 +64,7 @@ CTitle* CTitle::Create()
 //==========================================================================
 // インスタンス取得
 //==========================================================================
-CTitle* CTitle::GetInstance()
+CTutorial* CTutorial::GetInstance()
 {
 	return m_pThisPtr;
 }
@@ -86,7 +72,7 @@ CTitle* CTitle::GetInstance()
 //==========================================================================
 // 初期化処理
 //==========================================================================
-HRESULT CTitle::Init()
+HRESULT CTutorial::Init()
 {
 
 	// BGM再生
@@ -99,19 +85,7 @@ HRESULT CTitle::Init()
 	}
 
 	// タイトルロゴ生成
-	m_pLogo = CTitleLogo::Create(1.0f);
-
-	// プレスエンター
-	m_pPressEnter = CTitle_PressEnter::Create(1.0f);
-
-	// 塵
-	CMyEffekseer::GetInstance()->SetEffect(
-		CMyEffekseer::EFKLABEL::EFKLABEL_TITLEBLUR,
-		MyLib::Vector3(185.0f, 65.0f, -148.0f),
-		0.0f, 0.0f, 10.0f, false);
-
-	// シーンの種類
-	m_SceneType = SCENETYPE::SCENETYPE_NONE;
+	m_pLogo = CTutorialLogo::Create();
 
 	// 成功
 	return S_OK;
@@ -120,7 +94,7 @@ HRESULT CTitle::Init()
 //==========================================================================
 // 終了処理
 //==========================================================================
-void CTitle::Uninit()
+void CTutorial::Uninit()
 {
 	m_pThisPtr = nullptr;
 
@@ -131,7 +105,7 @@ void CTitle::Uninit()
 //==========================================================================
 // 更新処理
 //==========================================================================
-void CTitle::Update()
+void CTutorial::Update()
 {
 	CManager::GetInstance()->GetDebugProc()->Print(
 		"現在のモード：【タイトル】\n"
@@ -145,65 +119,12 @@ void CTitle::Update()
 	{// フェード中は抜ける
 		return;
 	}
-
-	// 状態別更新処理
-	(this->*(m_SceneFunc[m_SceneType]))();
-}
-
-//==========================================================================
-// なにもなし
-//==========================================================================
-void CTitle::SceneNone()
-{
-	// シーンカウンター
-	m_fSceneTime = TIME_FADELOGO;
-}
-
-//==========================================================================
-// ロゴフェードイン
-//==========================================================================
-void CTitle::SceneFadeInLogo()
-{
-
-}
-
-//==========================================================================
-// ロゴフェードアウト
-//==========================================================================
-void CTitle::SceneFadeOutLoGo()
-{
-	// シーンカウンター減算
-	m_fSceneTime -= CManager::GetInstance()->GetDeltaTime();
-
-	// 不透明度更新
-	float alpha = m_fSceneTime / TIME_FADELOGO;
-	m_pLogo->SetAlpha(alpha);
-
-	// エンターの色
-	m_pPressEnter->SetAlpha(alpha);
-
-	if (m_fSceneTime <= 0.0f)
-	{
-		m_fSceneTime = 0.0f;
-		m_SceneType = SCENETYPE_NONE;
-
-		// 不透明度更新
-		m_pLogo->SetAlpha(1.0f);
-		m_pLogo->Uninit();
-		m_pLogo = nullptr;
-
-		// エンターの色
-		m_pPressEnter->SetAlpha(1.0f);
-		m_pPressEnter->Uninit();
-		m_pPressEnter = nullptr;
-		return;
-	}
 }
 
 //==========================================================================
 // 描画処理
 //==========================================================================
-void CTitle::Draw()
+void CTutorial::Draw()
 {
 
 }
