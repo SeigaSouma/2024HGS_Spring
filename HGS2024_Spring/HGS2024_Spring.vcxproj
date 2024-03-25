@@ -114,6 +114,7 @@
     <ClCompile Include="Source\renderer.cpp" />
     <ClCompile Include="Source\result.cpp" />
     <ClCompile Include="Source\resultmanager.cpp" />
+    <ClCompile Include="Source\resultscore.cpp" />
     <ClCompile Include="Source\rockon_marker.cpp" />
     <ClCompile Include="Source\scene.cpp" />
     <ClCompile Include="Source\score.cpp" />
@@ -227,6 +228,7 @@
     <ClInclude Include="Source\renderer.h" />
     <ClInclude Include="Source\result.h" />
     <ClInclude Include="Source\resultmanager.h" />
+    <ClInclude Include="Source\resultscore.h" />
     <ClInclude Include="Source\rockon_marker.h" />
     <ClInclude Include="Source\scene.h" />
     <ClInclude Include="Source\score.h" />
